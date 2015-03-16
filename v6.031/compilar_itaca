@@ -1,0 +1,4 @@
+i686-pc-linux-gnu-g++ -I/usr/realtime/include -I/usr/src/linux/include -I/usr/src/daq2502/include -I/usr/include/fltk-1.1 -Wall -pipe -g -o itaca_fls itaca_fls.cxx -L/usr/realtime/lib -L/usr/lib/fltk-1.1 -lfltk /usr/lib/fltk-1.1/libfltk.a -lpthread -lm -lXext -lX11 -llxrt -lkcomedilxrt -lzint
+cp itaca_fls /usr/local/bin
+cp itaca_fls /root/itaca/itaca
+cp itaca_fls /rootFLS/itaca/itaca

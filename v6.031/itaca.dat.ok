@@ -1,0 +1,514 @@
+#	Global
+50		Potencia Láser		(0 - 100)
+1000		Velocidad Marcaje	(100 - 20.000 mm/s)
+0		Vertical		(-semicampo mm a +semicampo mm)
+0		Horizontal		(-semicampo mm a +semicampo mm)
+4		Valor Fuente
+1		JustificacionIzquierda	(0 - 1)
+0		JustificacionCentro	(0 - 1)
+0		JustificacionDerecha	(0 - 1)
+100		Anchura			(10 - 200)
+100		Espaciado		(10 - 200)
+2.0		Separación Líneas	(0.1 - 5 mm)
+#	Texto Línea 1:
+
+2.0		Altura			(1 - 5 mm)
+
+2.0		Altura			(1 - 5 mm)
+
+2.0		Altura			(1 - 5 mm)
+#	Texto Línea 2:
+
+2.0		Altura			(1 - 5 mm)
+
+2.0		Altura			(1 - 5 mm)
+
+2.0		Altura			(1 - 5 mm)
+#	Texto Línea 3:
+
+2.0		Altura			(1 - 5 mm)
+
+2.0		Altura			(1 - 5 mm)
+
+2.0		Altura			(1 - 5 mm)
+#	Texto Línea 4:
+
+2.0		Altura			(1 - 5 mm)
+
+2.0		Altura			(1 - 5 mm)
+
+2.0		Altura			(1 - 5 mm)
+#	Campos variables: Fecha 
+0		StatusFecha[0][0]
+0		OrdenFecha[0][0]
+
+
+
+0		ValorFormatoFecha1[0][0]
+0		ValorFormatoFecha2[0][0]
+0		ValorFormatoFecha3[0][0]
+0		ValorSeparadorFecha[0][0]
+0		Caducidad[0][0]
+0		StatusFecha[0][1]
+0		OrdenFecha[0][1]
+
+
+
+0		ValorFormatoFecha1[0][1]
+0		ValorFormatoFecha2[0][1]
+0		ValorFormatoFecha3[0][1]
+0		ValorSeparadorFecha[0][1]
+0		Caducidad[0][1]
+0		StatusFecha[0][2]
+0		OrdenFecha[0][2]
+
+
+
+0		ValorFormatoFecha1[0][2]
+0		ValorFormatoFecha2[0][2]
+0		ValorFormatoFecha3[0][2]
+0		ValorSeparadorFecha[0][2]
+0		Caducidad[0][2]
+0		StatusFecha[1][0]
+0		OrdenFecha[1][0]
+
+
+
+0		ValorFormatoFecha1[1][0]
+0		ValorFormatoFecha2[1][0]
+0		ValorFormatoFecha3[1][0]
+0		ValorSeparadorFecha[1][0]
+0		Caducidad[1][0]
+0		StatusFecha[1][1]
+0		OrdenFecha[1][1]
+
+
+
+0		ValorFormatoFecha1[1][1]
+0		ValorFormatoFecha2[1][1]
+0		ValorFormatoFecha3[1][1]
+0		ValorSeparadorFecha[1][1]
+0		Caducidad[1][1]
+0		StatusFecha[1][2]
+0		OrdenFecha[1][2]
+
+
+
+0		ValorFormatoFecha1[1][2]
+0		ValorFormatoFecha2[1][2]
+0		ValorFormatoFecha3[1][2]
+0		ValorSeparadorFecha[1][2]
+0		Caducidad[1][2]
+0		StatusFecha[2][0]
+0		OrdenFecha[2][0]
+
+
+
+0		ValorFormatoFecha1[2][0]
+0		ValorFormatoFecha2[2][0]
+0		ValorFormatoFecha3[2][0]
+0		ValorSeparadorFecha[2][0]
+0		Caducidad[2][0]
+0		StatusFecha[2][1]
+0		OrdenFecha[2][1]
+
+
+
+0		ValorFormatoFecha1[2][1]
+0		ValorFormatoFecha2[2][1]
+0		ValorFormatoFecha3[2][1]
+0		ValorSeparadorFecha[2][1]
+0		Caducidad[2][1]
+0		StatusFecha[2][2]
+0		OrdenFecha[2][2]
+
+
+
+0		ValorFormatoFecha1[2][2]
+0		ValorFormatoFecha2[2][2]
+0		ValorFormatoFecha3[2][2]
+0		ValorSeparadorFecha[2][2]
+0		Caducidad[2][2]
+0		StatusFecha[3][0]
+0		OrdenFecha[3][0]
+
+
+
+0		ValorFormatoFecha1[3][0]
+0		ValorFormatoFecha2[3][0]
+0		ValorFormatoFecha3[3][0]
+0		ValorSeparadorFecha[3][0]
+0		Caducidad[3][0]
+0		StatusFecha[3][1]
+0		OrdenFecha[3][1]
+
+
+
+0		ValorFormatoFecha1[3][1]
+0		ValorFormatoFecha2[3][1]
+0		ValorFormatoFecha3[3][1]
+0		ValorSeparadorFecha[3][1]
+0		Caducidad[3][1]
+0		StatusFecha[3][2]
+0		OrdenFecha[3][2]
+
+
+
+0		ValorFormatoFecha1[3][2]
+0		ValorFormatoFecha2[3][2]
+0		ValorFormatoFecha3[3][2]
+0		ValorSeparadorFecha[3][2]
+0		Caducidad[3][2]
+#	Campos variables: Hora 
+0		StatusHora[0][0]
+0		OrdenHora[0][0]
+
+
+
+0		ValorFormatoHora1[0][0]
+0		ValorFormatoHora2[0][0]
+0		ValorFormatoHora3[0][0]
+0		ValorSeparadorHora[0][0]
+0		StatusHora[0][1]
+0		OrdenHora[0][1]
+
+
+
+0		ValorFormatoHora1[0][1]
+0		ValorFormatoHora2[0][1]
+0		ValorFormatoHora3[0][1]
+0		ValorSeparadorHora[0][1]
+0		StatusHora[0][2]
+0		OrdenHora[0][2]
+
+
+
+0		ValorFormatoHora1[0][2]
+0		ValorFormatoHora2[0][2]
+0		ValorFormatoHora3[0][2]
+0		ValorSeparadorHora[0][2]
+0		StatusHora[1][0]
+0		OrdenHora[1][0]
+
+
+
+0		ValorFormatoHora1[1][0]
+0		ValorFormatoHora2[1][0]
+0		ValorFormatoHora3[1][0]
+0		ValorSeparadorHora[1][0]
+0		StatusHora[1][1]
+0		OrdenHora[1][1]
+
+
+
+0		ValorFormatoHora1[1][1]
+0		ValorFormatoHora2[1][1]
+0		ValorFormatoHora3[1][1]
+0		ValorSeparadorHora[1][1]
+0		StatusHora[1][2]
+0		OrdenHora[1][2]
+
+
+
+0		ValorFormatoHora1[1][2]
+0		ValorFormatoHora2[1][2]
+0		ValorFormatoHora3[1][2]
+0		ValorSeparadorHora[1][2]
+0		StatusHora[2][0]
+0		OrdenHora[2][0]
+
+
+
+0		ValorFormatoHora1[2][0]
+0		ValorFormatoHora2[2][0]
+0		ValorFormatoHora3[2][0]
+0		ValorSeparadorHora[2][0]
+0		StatusHora[2][1]
+0		OrdenHora[2][1]
+
+
+
+0		ValorFormatoHora1[2][1]
+0		ValorFormatoHora2[2][1]
+0		ValorFormatoHora3[2][1]
+0		ValorSeparadorHora[2][1]
+0		StatusHora[2][2]
+0		OrdenHora[2][2]
+
+
+
+0		ValorFormatoHora1[2][2]
+0		ValorFormatoHora2[2][2]
+0		ValorFormatoHora3[2][2]
+0		ValorSeparadorHora[2][2]
+0		StatusHora[3][0]
+0		OrdenHora[3][0]
+
+
+
+0		ValorFormatoHora1[3][0]
+0		ValorFormatoHora2[3][0]
+0		ValorFormatoHora3[3][0]
+0		ValorSeparadorHora[3][0]
+0		StatusHora[3][1]
+0		OrdenHora[3][1]
+
+
+
+0		ValorFormatoHora1[3][1]
+0		ValorFormatoHora2[3][1]
+0		ValorFormatoHora3[3][1]
+0		ValorSeparadorHora[3][1]
+0		StatusHora[3][2]
+0		OrdenHora[3][2]
+
+
+
+0		ValorFormatoHora1[3][2]
+0		ValorFormatoHora2[3][2]
+0		ValorFormatoHora3[3][2]
+0		ValorSeparadorHora[3][2]
+#	Campos variables: Serie 
+0		StatusNúmeroSerie[0][0]
+0		OrdenNumeroSerie[0][0]
+
+
+
+0		NúmeroSerie[0][0]
+0		NúmeroDígitosNúmeroSerie[0][0]
+0		NúmeroSerieInicial[0][0]
+0		NúmeroSerieFinal[0][0]
+0		NúmeroUnidadesLote[0][0]
+0		NúmeroUnidadesLoteActual[0][0]
+0		StatusNúmeroSerie[0][1]
+0		OrdenNumeroSerie[0][1]
+
+
+
+0		NúmeroSerie[0][1]
+0		NúmeroDígitosNúmeroSerie[0][1]
+0		NúmeroSerieInicial[0][1]
+0		NúmeroSerieFinal[0][1]
+0		NúmeroUnidadesLote[0][1]
+0		NúmeroUnidadesLoteActual[0][1]
+0		StatusNúmeroSerie[0][2]
+0		OrdenNumeroSerie[0][2]
+
+
+
+0		NúmeroSerie[0][2]
+0		NúmeroDígitosNúmeroSerie[0][2]
+0		NúmeroSerieInicial[0][2]
+0		NúmeroSerieFinal[0][2]
+0		NúmeroUnidadesLote[0][2]
+0		NúmeroUnidadesLoteActual[0][2]
+0		StatusNúmeroSerie[1][0]
+0		OrdenNumeroSerie[1][0]
+
+
+
+0		NúmeroSerie[1][0]
+0		NúmeroDígitosNúmeroSerie[1][0]
+0		NúmeroSerieInicial[1][0]
+0		NúmeroSerieFinal[1][0]
+0		NúmeroUnidadesLote[1][0]
+0		NúmeroUnidadesLoteActual[1][0]
+0		StatusNúmeroSerie[1][1]
+0		OrdenNumeroSerie[1][1]
+
+
+
+0		NúmeroSerie[1][1]
+0		NúmeroDígitosNúmeroSerie[1][1]
+0		NúmeroSerieInicial[1][1]
+0		NúmeroSerieFinal[1][1]
+0		NúmeroUnidadesLote[1][1]
+0		NúmeroUnidadesLoteActual[1][1]
+0		StatusNúmeroSerie[1][2]
+0		OrdenNumeroSerie[1][2]
+
+
+
+0		NúmeroSerie[1][2]
+0		NúmeroDígitosNúmeroSerie[1][2]
+0		NúmeroSerieInicial[1][2]
+0		NúmeroSerieFinal[1][2]
+0		NúmeroUnidadesLote[1][2]
+0		NúmeroUnidadesLoteActual[1][2]
+0		StatusNúmeroSerie[2][0]
+0		OrdenNumeroSerie[2][0]
+
+
+
+0		NúmeroSerie[2][0]
+0		NúmeroDígitosNúmeroSerie[2][0]
+0		NúmeroSerieInicial[2][0]
+0		NúmeroSerieFinal[2][0]
+0		NúmeroUnidadesLote[2][0]
+0		NúmeroUnidadesLoteActual[2][0]
+0		StatusNúmeroSerie[2][1]
+0		OrdenNumeroSerie[2][1]
+
+
+
+0		NúmeroSerie[2][1]
+0		NúmeroDígitosNúmeroSerie[2][1]
+0		NúmeroSerieInicial[2][1]
+0		NúmeroSerieFinal[2][1]
+0		NúmeroUnidadesLote[2][1]
+0		NúmeroUnidadesLoteActual[2][1]
+0		StatusNúmeroSerie[2][2]
+0		OrdenNumeroSerie[2][2]
+
+
+
+0		NúmeroSerie[2][2]
+0		NúmeroDígitosNúmeroSerie[2][2]
+0		NúmeroSerieInicial[2][2]
+0		NúmeroSerieFinal[2][2]
+0		NúmeroUnidadesLote[2][2]
+0		NúmeroUnidadesLoteActual[2][2]
+0		StatusNúmeroSerie[3][0]
+0		OrdenNumeroSerie[3][0]
+
+
+
+0		NúmeroSerie[3][0]
+0		NúmeroDígitosNúmeroSerie[3][0]
+0		NúmeroSerieInicial[3][0]
+0		NúmeroSerieFinal[3][0]
+0		NúmeroUnidadesLote[3][0]
+0		NúmeroUnidadesLoteActual[3][0]
+0		StatusNúmeroSerie[3][1]
+0		OrdenNumeroSerie[3][1]
+
+
+
+0		NúmeroSerie[3][1]
+0		NúmeroDígitosNúmeroSerie[3][1]
+0		NúmeroSerieInicial[3][1]
+0		NúmeroSerieFinal[3][1]
+0		NúmeroUnidadesLote[3][1]
+0		NúmeroUnidadesLoteActual[3][1]
+0		StatusNúmeroSerie[3][2]
+0		OrdenNumeroSerie[3][2]
+
+
+
+0		NúmeroSerie[3][2]
+0		NúmeroDígitosNúmeroSerie[3][2]
+0		NúmeroSerieInicial[3][2]
+0		NúmeroSerieFinal[3][2]
+0		NúmeroUnidadesLote[3][2]
+0		NúmeroUnidadesLoteActual[3][2]
+#	Campos variables: textos 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#	Barcode 
+0		ValorTipoLinea[0][0]
+0		InvertirBarcode[0][0]
+0		EscalaBarcode[0][0]
+0		SeparacionBarrasBarcode[0][0]
+0		ValorTipoLinea[0][1]
+0		InvertirBarcode[0][1]
+0		EscalaBarcode[0][1]
+0		SeparacionBarrasBarcode[0][1]
+0		ValorTipoLinea[0][2]
+0		InvertirBarcode[0][2]
+0		EscalaBarcode[0][2]
+0		SeparacionBarrasBarcode[0][2]
+0		ValorTipoLinea[1][0]
+0		InvertirBarcode[1][0]
+0		EscalaBarcode[1][0]
+0		SeparacionBarrasBarcode[1][0]
+0		ValorTipoLinea[1][1]
+0		InvertirBarcode[1][1]
+0		EscalaBarcode[1][1]
+0		SeparacionBarrasBarcode[1][1]
+0		ValorTipoLinea[1][2]
+0		InvertirBarcode[1][2]
+0		EscalaBarcode[1][2]
+0		SeparacionBarrasBarcode[1][2]
+0		ValorTipoLinea[2][0]
+0		InvertirBarcode[2][0]
+0		EscalaBarcode[2][0]
+0		SeparacionBarrasBarcode[2][0]
+0		ValorTipoLinea[2][1]
+0		InvertirBarcode[2][1]
+0		EscalaBarcode[2][1]
+0		SeparacionBarrasBarcode[2][1]
+0		ValorTipoLinea[2][2]
+0		InvertirBarcode[2][2]
+0		EscalaBarcode[2][2]
+0		SeparacionBarrasBarcode[2][2]
+0		ValorTipoLinea[3][0]
+0		InvertirBarcode[3][0]
+0		EscalaBarcode[3][0]
+0		SeparacionBarrasBarcode[3][0]
+0		ValorTipoLinea[3][1]
+0		InvertirBarcode[3][1]
+0		EscalaBarcode[3][1]
+0		SeparacionBarrasBarcode[3][1]
+0		ValorTipoLinea[3][2]
+0		InvertirBarcode[3][2]
+0		EscalaBarcode[3][2]
+0		SeparacionBarrasBarcode[3][2]
+#	Gráficos
+
+
+
+
+
+
+
+
+
+
+
+

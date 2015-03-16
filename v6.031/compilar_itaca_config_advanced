@@ -1,0 +1,2 @@
+i686-pc-linux-gnu-g++ -I/usr/include/fltk-1.1 -Wall -pipe -g -o itaca_config_advanced itaca_config_advanced.cxx -L/usr/lib/fltk-1.1 -lfltk /usr/lib/fltk-1.1/libfltk.a -lm -lXext -lX11 
+cp itaca_config_advanced /usr/local/bin

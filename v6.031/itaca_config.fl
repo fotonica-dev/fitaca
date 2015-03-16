@@ -1,0 +1,4370 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0302 
+header_name {.h} 
+code_name {.cxx}
+decl {\#include "config.h" //variables globales} {public local
+} 
+
+Function {leer_configuracion()} {open C return_type int
+} {
+  code {// función para leer datos de configuración globales del sistema
+char record[150], *dato;	/* array to hold each "record" */ 
+FILE *fichero;                  /* pointer to input file */
+int caracter, i;
+
+/* open the file to read */
+fichero = fopen("/root/itaca/itaca.conf", "r");			
+
+if (fichero == NULL) {
+	printf("Error al abrir el fichero itaca.conf\\n");
+	printf("SALIENDO DE LA APLICACIÓN\\n");
+	exit(0);
+}
+
+//////////////////////////////////////////////////////////////////////////////
+/* Lee la línea con un comentario: CONTROL DE LÁSER */
+fgets(record, sizeof(record), fichero);
+
+/* Lee el valor del periodo del tren de pulsos utilizado para excitar el láser */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+PeriodoTrenPulsos = atoi(dato);
+
+if (debug){
+	printf("Dato %s PeriodoTrenPulsos %d\\n", dato, PeriodoTrenPulsos);
+}
+
+/* Lee el valor del retardo de Láser On */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+RetardoLaserOn = atoi(dato);
+
+if (debug){
+	printf("Dato %s RetardoLaserOn %d\\n", dato, RetardoLaserOn);
+}
+
+/* Lee el valor del retardo de Láser Off */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+RetardoLaserOff = atoi(dato);
+
+if (debug){
+	printf("Dato %s RetardoLaserOff %d\\n", dato, RetardoLaserOff);
+}
+
+
+//////////////////////////////////////////////////////////////////////////////
+/* Lee la línea con un comentario: CONTROL DE SALTO */
+fgets(record, sizeof(record), fichero);
+
+/* Lee el valor de la velocidad de salto */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+VelocidadSalto = atoi(dato);
+
+if (debug){
+	printf("Dato %s VelocidadSalto %d\\n", dato, VelocidadSalto);
+}
+
+/* Lee el valor del retardo de salto */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+RetardoSalto = atoi(dato);
+
+if (debug){
+	printf("Dato %s RetardoSalto %d\\n", dato, RetardoSalto);
+}
+
+
+//////////////////////////////////////////////////////////////////////////////
+/* Lee la línea con un comentario: RETARDOS POLÍGONO Y MARCAJE */
+fgets(record, sizeof(record), fichero);
+
+/* Lee el valor del Retardo de polígono */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+RetardoPoligono = atoi(dato);
+
+if (debug){
+	printf("Dato %s RetardoPoligono %d\\n", dato, RetardoPoligono);
+}
+
+/* Lee el valor del Retardo de marcaje */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+RetardoMarcaje = atoi(dato);
+
+if (debug){
+	printf("Dato %s RetardoMarcaje %d\\n", dato, RetardoMarcaje);
+}
+
+
+//////////////////////////////////////////////////////////////////////////////
+/* Lee la línea con un comentario: FICHERO CORRECCIÓN */
+fgets(record, sizeof(record), fichero);
+
+/* Lee el valor del factor de calibración del fichero de corrección */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+CalibracionCorreccion = atof(dato);
+
+if (debug){
+	printf("Dato %s CalibracionCorreccion %f\\n", dato, CalibracionCorreccion);
+}
+
+//////////////////////////////////////////////////////////////////////////////
+/* Lee la línea con un comentario: ORIENTACIÓN Y AVANCE */
+fgets(record, sizeof(record), fichero);
+
+/* Lee el valor de la Orientación */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+Orientacion = atoi(dato);
+
+if (debug){
+	printf("Dato %s Orientacion %d\\n", dato, Orientacion);
+}
+
+/* Lee el valor del Avance */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+Avance = atoi(dato);
+
+if (debug){
+	printf("Dato %s Avance %d\\n", dato, Avance);
+}
+
+//////////////////////////////////////////////////////////////////////////////
+/* Lee la línea con un comentario: MARCAJE DINÁMICO */
+fgets(record, sizeof(record), fichero);
+
+/* Lee el valor de la variable de estado que indica si el marcaje dinámico está o no activo */
+// 0 indica no activado, 1 indica activado con velocidad variable (usa encoder) y 2 es activado con velocidad constante
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+MarcajeDinamicoActivo = atoi(dato);
+
+if (debug){
+	printf("Dato %s MarcajeDinamicoActivo %d\\n", dato, MarcajeDinamicoActivo);
+}
+
+/* Lee el valor de la calibración del encoder */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+CalibracionEncoder = atof(dato);
+
+if (debug){
+	printf("Dato %s CalibracionEncoder %f\\n", dato, CalibracionEncoder);
+}
+
+/* Lee el valor de la velocidad de la lÂ´inea */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+VelocidadLinea = atof(dato);
+
+if (debug){
+	printf("Dato %s VelocidadLinea %f\\n", dato, VelocidadLinea);
+}
+
+
+//////////////////////////////////////////////////////////////////////////////
+/* Lee la línea con un comentario: CONTROL GALVOS */
+fgets(record, sizeof(record), fichero);
+
+/* Lee el valor de la tensión de alimentación del galvo que produce un desplazamiento máximo */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+VGalvoRef_MaximoBits = atof(dato);
+
+//VGalvoMax = VGalvoRef_MaximoBits * 1.01;
+
+if (debug){
+	printf("Dato %s VGalvoRef_MaximoBits %f\\n", dato, VGalvoRef_MaximoBits);
+}
+
+//////////////////////////////////////////////////////////////////////////////
+/* Lee la línea con un comentario: CONTROL EXTRACTOR */
+fgets(record, sizeof(record), fichero);
+
+/* Lee el valor de la tensión de alimentación del galvo que produce un desplazamiento máximo */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+ExtractorActivado = atoi(dato);
+
+if (debug){
+	printf("Dato %s ExtractorActivado %d\\n", dato, ExtractorActivado);
+}
+
+//////////////////////////////////////////////////////////////////////////////
+/* Lee la línea con un comentario: CONTROL DISPARO FOTOCÉLULA */
+fgets(record, sizeof(record), fichero);
+
+/* Lee el valor de disparo de la fotocélula */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+ValorDisparo = atoi(dato);
+
+if (debug){
+	printf("Dato %s ValorDisparo %d\\n", dato, ValorDisparo);
+}
+
+//////////////////////////////////////////////////////////////////////////////
+/* Lee la línea con un comentario: PERIODO */
+fgets(record, sizeof(record), fichero);
+
+/* Lee el valor del periodo en microsegundos */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+PERIODO_MICROSEGUNDOS = atoi(dato);
+
+if (debug){
+	printf("Dato %s PERIODO_MICROSEGUNDOS %d\\n", dato, PERIODO_MICROSEGUNDOS);
+}
+
+//////////////////////////////////////////////////////////////////////////////
+/* Lee la línea con un comentario: Servicio Técnico */
+fgets(record, sizeof(record), fichero);
+
+/* Lee el valor de la variable de servicio técnico */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+ServicioTecnico = atoi(dato);
+
+if (debug){
+	printf("Dato %s ServicioTecnico %d\\n", dato, ServicioTecnico);
+}
+
+/* Lee la línea con un comentario: IDIOMA */
+fgets(record, sizeof(record), fichero);
+
+/* Lee el valor del idioma para el GUI */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+Idioma = atoi(dato);
+
+if (Idioma < 0) {Idioma = 0;}
+if (Idioma > 2) {Idioma = 2;}
+
+if (debug){
+	printf("Dato %s Idioma %d\\n", dato, Idioma);
+}
+
+/* Lee la línea con un comentario: SPOT */
+fgets(record, sizeof(record), fichero);
+
+/* Lee el valor del tamaño del spot */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+Spot = atoi(dato);
+
+if (Spot == 0) {Spot = 150;}
+
+if (debug){
+	printf("Dato %s Spot %d\\n", dato, Spot);
+}
+
+/* Lee la línea con un comentario: ACTIVACION GALVOS */
+fgets(record, sizeof(record), fichero);
+
+/* Lee el valor que hay que escribir para activar los galvos */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+ValorActivacionGalvos = atoi(dato);
+
+// tiene que ser 0 o 1, si no se hace 0
+if ((ValorActivacionGalvos != 0)&&(ValorActivacionGalvos != 1)) {ValorActivacionGalvos = 0;}
+
+if (debug){
+	printf("Dato %s ValorActivacionGalvos %d\\n", dato, ValorActivacionGalvos);
+}
+
+/* Lee la línea con un comentario: CONTROL PUERTO SERIE */
+fgets(record, sizeof(record), fichero);
+
+/* Lee el valor que hay que escribir para saber si hay control por puerto serie */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+PuertoSerieActivo = atoi(dato);
+
+// tiene que ser 0 o 1, si no se hace 0
+if ((PuertoSerieActivo != 0)&&(PuertoSerieActivo != 1)) {PuertoSerieActivo = 0;}
+
+if (debug){
+	printf("Dato %s PuertoSerieActivo %d\\n", dato, PuertoSerieActivo);
+}
+
+/* Lee la línea con un comentario: CENTRADO */
+fgets(record, sizeof(record), fichero);
+
+/* Lee el valor que hay que escribir para saber si la marca inicial está centrada */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+Centrado = atoi(dato);
+
+// tiene que ser 0 o 1, si no se hace 0
+if ((Centrado != 0)&&(Centrado != 1)) {Centrado = 0;}
+
+if (debug){
+	printf("Dato %s Centrado %d\\n", dato, Centrado);
+}
+
+//////////////////////////////////////////////////////////////////////////////
+/* Lee la línea con un comentario: TIPO DE DISPARO */
+fgets(record, sizeof(record), fichero);
+
+/* Lee el valor del tipo de disparo, para cargar en el GUI */
+fgets(record, sizeof(record), fichero);	/* Lee una línea */
+dato = strtok(record, "\\t"); 		/* lee hasta el primer tabulador */
+TipoDisparo = atoi(dato);
+
+if (debug){
+	printf("Dato %s TipoDisparo %d\\n", dato, TipoDisparo);
+}  
+
+/* Lee la línea con un comentario: RETARDO DE DISPARO */
+fgets(record, sizeof(record), fichero);
+
+/* Lee el valor del retardo tras el disparo de la fotocélula */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+RetardoDisparo = atoi(dato);
+
+if (debug){
+	printf("Dato %s RetardoDisparo %d\\n", dato, RetardoDisparo);
+}  
+
+/* Lee la línea con un comentario: MÍNIMO DE LECTURAS CONSECUTIVAS */
+fgets(record, sizeof(record), fichero);
+
+/* Lee el valor del mínimo número de lecturas consecutivas del disparo de la fotocélula */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+MinimoLecturasConsecutivas = atoi(dato);
+
+if (debug){
+	printf("Dato %s MinimoLecturasConsecutivas %d\\n", dato, MinimoLecturasConsecutivas);
+}  
+
+/* Lee la línea con un comentario: SEPARACIÓN ENTRE DISPAROS */
+fgets(record, sizeof(record), fichero);
+  
+/* Lee el valor de la Separacion Entre Disparos */
+fgets(record, sizeof(record), fichero);	/* Lee una línea */
+dato = strtok(record, "\\t"); 		/* lee hasta el primer tabulador */
+SeparacionEntreDisparos_mm = atoi(dato);
+
+if (debug){
+	printf("Dato %s SeparacionEntreDisparos_mm %d\\n", dato, SeparacionEntreDisparos_mm);
+}    
+
+//////////////////////////////////////////////////////////////////////////////
+/* Lee la línea con un comentario: REVERSO */
+fgets(record, sizeof(record), fichero);
+
+/* Lee el valor que hay que escribir para saber si se imprime en el reverso (en espejo) */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+Reverso = atoi(dato);
+
+// tiene que ser 0 o 1, si no se hace 0
+if ((Reverso != 0)&&(Reverso != 1)) {Reverso = 0;}
+
+if (debug){
+	printf("Dato %s Reverso %d\\n", dato, Reverso);
+}
+
+//////////////////////////////////////////////////////////////////////////////
+/* Lee la línea con un comentario: ESTRATEGIA DE MARCAJE */
+fgets(record, sizeof(record), fichero);
+
+/* Lee el valor que hay que escribir para saber que estrategia de marcaje se sigue */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+Estrategia = atoi(dato);
+
+// tiene que ser 0 (carácter), 1 (átomos) o 2 (átomos fuera de campo), si no se hace 0 (carácter)
+if ((Estrategia != 0)&&(Estrategia != 1)&&(Estrategia != 2) && (Estrategia !=3)) {Estrategia = 0;}
+
+if (debug){
+	printf("Dato %s Estrategia %d\\n", dato, Estrategia);
+}
+
+//////////////////////////////////////////////////////////////////////////////
+/* Lee la línea con un comentario: SISTEMA DE CONTROL */
+fgets(record, sizeof(record), fichero);
+
+/* Lee el valor que hay que escribir para saber qué sistema de control hay implementado */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+Control = atoi(dato);
+
+// tiene que ser 0 (DAQ) o 1 (FPGA), si no se hace 0 (DAQ)
+if ((Control != 0)&&(Control != 1)) {Control = 0;}
+
+if (debug){
+	printf("Dato %s Control %d\\n", dato, Control);
+}
+
+//////////////////////////////////////////////////////////////////////////////
+/* Lee la línea con un comentario: CONTROL ERROR DE CAMPO */
+fgets(record, sizeof(record), fichero);
+
+/* Lee el valor de la tensión de alimentación del galvo que produce un desplazamiento máximo */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+ControlarErrorCampo = atoi(dato);
+
+// tiene que ser 0 o 1, si no se hace 1 (activado)
+if ((ControlarErrorCampo != 0) && (ControlarErrorCampo != 1)) {ControlarErrorCampo = 1;}
+
+if (debug){
+	printf("Dato %s ControlarErrorCampo %d\\n", dato, ControlarErrorCampo);
+}
+
+//////////////////////////////////////////////////////////////////////////////
+/* Lee la línea con un comentario: CONTROL ERROR DE GALVOS */
+fgets(record, sizeof(record), fichero);
+
+/* Lee el valor de la tensión de alimentación del galvo que produce un desplazamiento máximo */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+ControlarErrorGalvos = atoi(dato);
+
+// tiene que ser 0 o 1, si no se hace 1 (activado)
+if ((ControlarErrorGalvos != 0) && (ControlarErrorGalvos != 1)) {ControlarErrorGalvos = 1;}
+
+if (debug){
+	printf("Dato %s ControlarErrorGalvos %d\\n", dato, ControlarErrorGalvos);
+}
+
+//////////////////////////////////////////////////////////////////////////////
+/* Lee la línea con un comentario: TURNOS */
+if (fgets(record, sizeof(record), fichero) != NULL) { // puede no existir, si es una actualización de una versión SW anterior
+
+	// lEE los valores de los turnos separados por tabuladores
+	for (i=0; i<NumeroTurnos; i++) {
+
+		/* Lee el valor de la tensión de alimentación del galvo que produce un desplazamiento máximo */
+		fgets(record, sizeof(record), fichero);
+		dato = strtok(record, "\\t"); HoraInicioTurno[i] = atoi(dato);
+		dato = strtok(NULL, "\\t"); MinutoInicioTurno[i] = atoi(dato);
+		dato = strtok(NULL, "\\t"); HoraFinTurno[i] = atoi(dato);
+		dato = strtok(NULL, "\\t"); MinutoFinTurno[i] = atoi(dato);
+		dato = strtok(NULL, "\\t\\n"); 
+		if (dato!=NULL) {
+			strcpy(TextoTurno[i], dato);
+		}
+		else {
+			strcpy (TextoTurno[i], "");
+		}
+				
+		if (debug){
+			printf("Turno %d - %d\\t%d\\t%d\\t%d\\%s\\n", i, HoraInicioTurno[i], MinutoInicioTurno[i], HoraFinTurno[i], MinutoFinTurno[i], TextoTurno[i]);
+		}
+		
+	}
+
+}
+
+else {
+
+	// lEE los valores de los turnos separados por tabuladores
+	for (i=0; i<NumeroTurnos; i++) {
+
+		HoraInicioTurno[i] = 0;
+		MinutoInicioTurno[i] = 0;
+		HoraFinTurno[i] = 0;
+		MinutoFinTurno[i] = 0;
+		strcpy (TextoTurno[i], "");
+	
+		if (debug){
+			printf("Turno %d - %d\\t%d\\t%d\\t%d\\%s\\n", i, HoraInicioTurno[i], MinutoInicioTurno[i], HoraFinTurno[i], MinutoFinTurno[i], TextoTurno[i]);
+		}	
+	
+	}
+	
+}
+
+//////////////////////////////////////////////////////////////////////////////
+/* Lee la línea con un comentario: TIPO DE LASER */
+fgets(record, sizeof(record), fichero);
+
+/* Lee el valor que hay que escribir para saber qué sistema de control hay implementado */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+TipoLaser = atoi(dato);
+
+// tiene que ser 1 (CO2) o 2 (Fibra), si no se hace 1 (CO2)
+if ((TipoLaser != 0)&&(TipoLaser != 1)) {TipoLaser = 0;}
+
+if (debug){
+	printf("Dato %s TipoLaser %d\\n", dato, TipoLaser);
+}
+
+
+//////////////////////////////////////////////////////////////////////////////
+/* Lee la línea con un comentario: FICHERO CORRECCION ACTIVO */
+fgets(record, sizeof(record), fichero);
+
+/* Lee el valor que hay que escribir para saber qué sistema de control hay implementado */
+fgets(record, sizeof(record), fichero);
+dato = strtok(record, "\\t");
+FicheroCorreccionActivo = atoi(dato);
+
+// tiene que ser 0 (No Activo) o 1 (Activo), si no se hace 0 (No Activo)
+if ((FicheroCorreccionActivo != 0)&&(FicheroCorreccionActivo != 1)) {FicheroCorreccionActivo = 0;}
+
+if (debug){
+	printf("Dato %s Fichero Correccion Activo %d\\n", dato, FicheroCorreccionActivo);
+}
+
+		
+// cierra el archivo
+fclose(fichero);	
+
+////////////////////////////////////////////////////////////////////////////////
+// Abre ahora el fichero de control de acceso, que es binario
+////////////////////////////////////////////////////////////////////////////////
+
+fichero = fopen("/root/itaca/acceso.bin", "rb");		
+
+if (fichero == NULL) {
+	
+	// Si el fichero no existe el control está activado
+	ControlAcceso = ON;
+}
+
+else {
+
+	// Lee en binario el primer carácter
+	caracter = fgetc(fichero);
+	
+	// Si es un 1 el control de acceso está desactivado, en cualquier otro caso está activado
+	if (caracter == 1) {	
+		ControlAcceso = OFF;
+	}
+	else {
+		ControlAcceso = ON;
+	}
+	
+	// cierra el archivo
+	fclose(fichero);
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Abre ahora el fichero de contraseña de configuración
+////////////////////////////////////////////////////////////////////////////////
+
+fichero = fopen("/root/itaca/configuracion.bin", "rb");		
+
+if (fichero == NULL) {
+	
+	// Si el fichero no existe se usa la contraseña por defecto
+	strcpy(PasswordConfiguracion, PASSWORD);
+}
+
+else {
+
+	// Lee en la contraseña
+	fgets(PasswordConfiguracion, sizeof(PasswordConfiguracion), fichero);
+	
+	// cierra el archivo
+	fclose(fichero);
+
+}
+
+return 0;} {selected
+  }
+} 
+
+Function {escribir_configuracion()} {open C return_type int
+} {
+  code {// función para escribir los datos de configuración del sistema
+int i;
+char record[256];		/* array to hold each "record" */ 
+FILE *fichero;                  /* pointer to file */
+
+/* open the file to write */
+fichero = fopen("/root/itaca/itaca.conf", "w");			
+
+//////////////////////////////////////////////////////////////////////////////
+/* Escribe la línea con un comentario: */
+fputs("\#	CONTROL DE LÁSER\\n", fichero);
+
+/* Escribe el valor del Periodo tren de pulsos */
+sprintf(record, "%d		Periodo tren de pulsos	(1 - 100.000 microsegundos)\\n", PeriodoTrenPulsos);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}  
+
+/* Escribe el valor del Retardo Laser On */
+sprintf(record, "%d		Retardo Laser On .	(0 - 100.000 microsegundos)\\n", RetardoLaserOn);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}   
+
+/* Escribe el valor del Retardo Laser Off */
+sprintf(record, "%d		Retardo Laser Off 	(0 - 100.000 microsegundos)\\n", RetardoLaserOff);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}   
+
+//////////////////////////////////////////////////////////////////////////////
+/* Escribe la línea con un comentario: */
+fputs("\#	CONTROL DE SALTO\\n", fichero);
+
+/* Escribe el valor de la Velocidad de salto */
+sprintf(record, "%d		Velocidad de salto	(100 - 50.000 mm/s)\\n", VelocidadSalto);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}  
+
+/* Escribe el valor del Retardo Salto */
+sprintf(record, "%d		Retardo Salto 		(0 - 100.000 microsegundos)\\n", RetardoSalto);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}   
+
+//////////////////////////////////////////////////////////////////////////////
+/* Escribe la línea con un comentario: */
+fputs("\#	RETARDOS POLÍGONO Y MARCAJE\\n", fichero);
+
+/* Escribe el valor del Retardo de Polígono */
+sprintf(record, "%d		Retardo Polígono 	(0 - 100.000 microsegundos)\\n", RetardoPoligono);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}  
+
+/* Escribe el valor del Retardo de Marcaje */
+sprintf(record, "%d		Retardo Marcaje 	(0 - 100.000 microsegundos)\\n", RetardoMarcaje);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}   
+
+//////////////////////////////////////////////////////////////////////////////
+/* Escribe la línea con un comentario: */
+fputs("\#	FICHERO CORRECCIÓN\\n", fichero);
+
+/* Escribe el valor de la calibración de la corrección */
+sprintf(record, "%0.1f		Calibración corrección	(bits/mm)\\n", CalibracionCorreccion);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}  
+
+//////////////////////////////////////////////////////////////////////////////
+/* Escribe la línea con un comentario: */
+fputs("\#	ORIENTACIÓN Y AVANCE\\n", fichero);
+
+/* Escribe el valor de la Orientacion */
+sprintf(record, "%d		Orientación		0, 90, 180 o 270º\\n", Orientacion);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}  
+
+/* Escribe el valor del Avance */
+sprintf(record, "%d		Avance			0, 90, 180 o 270º\\n", Avance);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}   
+
+//////////////////////////////////////////////////////////////////////////////
+/* Escribe la línea con un comentario: */
+fputs("\#	MARCAJE DINÁMICO\\n", fichero);
+
+/* Escribe el valor del Marcaje Dinamico Activo */
+sprintf(record, "%d		Activado		(0: desactivado 1:activado 2:velocidad constante)\\n", MarcajeDinamicoActivo);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}  
+
+/* Escribe el valor de la Calibracion del Encoder */
+sprintf(record, "%0.1f		Calibración encoder	(cuentas por milímetro)\\n", CalibracionEncoder);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}   
+
+/* Escribe el valor de la Velocidad de Linea */
+sprintf(record, "%0.1f		Velocidad línea		(metros/min)\\n", VelocidadLinea);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}
+	
+//////////////////////////////////////////////////////////////////////////////
+/* Escribe la línea con un comentario: */
+fputs("\#	CONTROL GALVOS\\n", fichero);
+
+/* Escribe el valor de la tensión VGalvoRef_MaximoBits */
+sprintf(record, "%0.1f		VGalvoRef_MaximoBits 	(V) Tensión en galvo para desplazarse al extremo del campo\\n", VGalvoRef_MaximoBits);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}  	
+	
+//////////////////////////////////////////////////////////////////////////////
+/* Escribe la línea con un comentario: */
+fputs("\#	CONTROL EXTRACTOR\\n", fichero);
+
+/* Escribe el valor del Extractor */
+sprintf(record, "%d		Extractor Activado	(0: desactivado - 1: activado) Controla la activación del extractor\\n", ExtractorActivado);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}  
+
+//////////////////////////////////////////////////////////////////////////////
+/* Escribe la línea con un comentario: */
+fputs("\#	CONTROL DISPARO FOTOCÉLULA\\n", fichero);
+
+/* Escribe el valor del Valor de Disparo de la fotocéclula */
+sprintf(record, "%d		Valor Disparo		(0 - 1) Controla qué valor digital de la fotocélula dispara la marca\\n", ValorDisparo);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}  
+
+//////////////////////////////////////////////////////////////////////////////
+/* Escribe la línea con un comentario: */
+fputs("\#	PERIODO\\n", fichero);
+
+/* Escribe el valor del PERIODO_MICROSEGUNDOS */
+sprintf(record, "%d		Periodo Microsegundos	(10 - 1000) Periodo RT en microsegundos\\n", PERIODO_MICROSEGUNDOS);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}  
+
+//////////////////////////////////////////////////////////////////////////////
+/* Escribe la línea con un comentario: */
+fputs("\#	SERVICIO TÉCNICO\\n", fichero);
+
+/* Escribe el valor del ServicioTecnico */
+sprintf(record, "%d		ServicioTecnico		(0 - 1) Controla la activación del modo de servicio técnico\\n", ServicioTecnico);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}  
+
+//////////////////////////////////////////////////////////////////////////////
+/* Escribe la línea con un comentario: */
+fputs("\#	IDIOMA\\n", fichero);
+
+/* Escribe el valor del Idioma */
+sprintf(record, "%d		Idioma			Idioma del GUI: 0-español, 1-inglés, 2-italiano\\n", Idioma);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}  
+
+//////////////////////////////////////////////////////////////////////////////
+/* Escribe la línea con un comentario: */
+fputs("\#	SPOT\\n", fichero);
+
+/* Escribe el valor del Spot */
+sprintf(record, "%d		Spot			Tamaño del spot en micras (se usa en los códigos de barras)\\n", Spot);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}  
+
+//////////////////////////////////////////////////////////////////////////////
+/* Escribe la línea con un comentario: */
+fputs("\#	ACTIVACIÓN GALVOS\\n", fichero);
+
+/* Escribe el valor */
+sprintf(record, "%d		ValorActivacionGalvos	Valor digital (0/1) que hay que escribir para activar los galvos\\n", ValorActivacionGalvos);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}  
+
+//////////////////////////////////////////////////////////////////////////////
+/* Escribe la línea con un comentario: */
+fputs("\#	CONTROL PUERTO SERIE\\n", fichero);
+
+/* Escribe el valor */
+sprintf(record, "%d		PuertoSerieActivo	(0 - 1) Activa o no el control por el puerto serie\\n", PuertoSerieActivo);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}  
+
+//////////////////////////////////////////////////////////////////////////////
+/* Escribe la línea con un comentario: */
+fputs("\#	CENTRADO\\n", fichero);
+
+/* Escribe el valor */
+sprintf(record, "%d		Centrado		(0 - 1) Activa o no el centrado automáticamente en el inicio\\n", Centrado);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}  
+
+//////////////////////////////////////////////////////////////////////////////
+/* Escribe la línea con un comentario: TIPO DE DISPARO */
+fputs("\#	TIPO DE DISPARO\\n", fichero);
+
+/* Escribe el valor del tipo de disparo */
+sprintf(record, "%d		TipoDisparo		(0 - 1) Disparo externo o interno\\n", TipoDisparo);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}  
+
+//////////////////////////////////////////////////////////////////////////////
+/* Escribe la línea con un comentario: RETARDO DE DISPARO */
+fputs("\#	RETARDO DE DISPARO\\n", fichero);
+
+/* Escribe el valor */
+sprintf(record, "%d		Retardo Disparo 	(0 - 1000 milímetros) Retardo en milímetros tras el disparo de la fotocélula\\n", RetardoDisparo);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}  
+ 	
+//////////////////////////////////////////////////////////////////////////////
+/* Escribe la línea con un comentario: MÍNIMO DE LECTURAS CONSECUTIVAS */
+fputs("\#	MÍNIMO DE LECTURAS CONSECUTIVAS\\n", fichero);
+
+/* Escribe el valor */
+sprintf(record, "%d		MinimoLecturasConsecutivas	(1 - 1000) Número mínimo de lecturas consecutivas de disparo de fotocélula\\n", MinimoLecturasConsecutivas);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}  
+
+//////////////////////////////////////////////////////////////////////////////
+/* Escribe la línea con un comentario: SEPARACIÓN ENTRE DISPAROS */
+fputs("\#	SEPARACIÓN ENTRE DISPAROS\\n", fichero);
+
+/* Escribe el valor de la separación entre disparos */
+sprintf(record, "%d		SeparacionEntreDisparos	(0 - 10000 mm) Separación entre disparos internos\\n", SeparacionEntreDisparos_mm);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}  
+
+//////////////////////////////////////////////////////////////////////////////
+/* Escribe la línea con un comentario: */
+fputs("\#	REVERSO\\n", fichero);
+
+/* Escribe el valor */
+sprintf(record, "%d		Reverso			(0 - 1) Activa o no la impresión en el reverso del material (impresión en espejo)\\n", Reverso);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}  
+
+//////////////////////////////////////////////////////////////////////////////
+/* Escribe la línea con un comentario: */
+fputs("\#	ESTRATEGIA DE MARCAJE\\n", fichero);
+
+/* Escribe el valor */
+sprintf(record, "%d		Estrategia de marcaje	0-carácter, 1-átomos, 2-átomos fuera de campo\\n", Estrategia);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}  
+
+//////////////////////////////////////////////////////////////////////////////
+/* Escribe la línea con un comentario: */
+fputs("\#	SISTEMA DE CONTROL\\n", fichero);
+
+/* Escribe el valor */
+sprintf(record, "%d		Sistema de control	0-DAQ, 1-FPGA\\n", Control);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}  
+
+
+//////////////////////////////////////////////////////////////////////////////
+/* Escribe la línea con un comentario: */
+fputs("\#	CONTROL ERROR DE CAMPO\\n", fichero);
+
+/* Escribe el valor */
+sprintf(record, "%d		ControlarErrorCampo\\n", ControlarErrorCampo);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}  
+
+//////////////////////////////////////////////////////////////////////////////
+/* Escribe la línea con un comentario: */
+fputs("\#	CONTROL ERROR DE GALVOS\\n", fichero);
+
+/* Escribe el valor */
+sprintf(record, "%d		ControlarErrorGalvos\\n", ControlarErrorGalvos);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}  
+
+//////////////////////////////////////////////////////////////////////////////
+/* Escribe la línea con un comentario: */
+fputs("\#	TURNOS\\n", fichero);
+
+// Escribe los valores de los turnos separados por tabuladores
+for (i=0; i<NumeroTurnos; i++) {
+
+	sprintf(record, "%d\\t%d\\t%d\\t%d\\t%s\\n", HoraInicioTurno[i], MinutoInicioTurno[i], HoraFinTurno[i], MinutoFinTurno[i], TextoTurno[i]);
+	fputs(record, fichero);
+	
+	if (debug){
+		printf("Escribiendo: %s", record);
+	}
+	
+}
+
+//////////////////////////////////////////////////////////////////////////////
+/* Escribe la línea con un comentario: */
+fputs("\#	TIPO DE LASER\\n", fichero);
+
+/* Escribe el valor */
+sprintf(record, "%d		Tipo de Laser	1-CO2, 2-Fibra\\n", TipoLaser);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}  
+
+//////////////////////////////////////////////////////////////////////////////
+/* Escribe la línea con un comentario: */
+fputs("\#	FICHERO DE CORRECCION ACTIVO\\n", fichero);
+
+/* Escribe el valor */
+sprintf(record, "%d		Fichero de correccion activo	0-No Activo, 1-Activo\\n", FicheroCorreccionActivo);
+fputs(record, fichero);
+
+if (debug){
+	printf("Escribiendo: %s", record);
+}  
+
+ 	 
+//////////////////////////////////////////////////////////////////////////////
+/* cierra el archivo */
+fclose(fichero);	
+
+return 0;} {}
+} 
+
+Function {Make_Window()} {open
+} {
+  Fl_Window VentanaConfiguracion {open
+    xywh {0 0 800 600} type Double box BORDER_BOX color 7 modal noborder size_range {0 0 800 600} visible
+  } {
+    Fl_Box EtiquetaLinea {
+      label {LÍNEA}
+      xywh {10 10 140 35} box BORDER_BOX color 7 labelsize 18
+      code3 {switch (Idioma) {case ESP:o->label("LÍNEA");break; case ING:o->label("LINE");break; case ITA:o->label("LINEA");break;}}
+    }
+    Fl_Box EtiquetaDisparo {
+      label DISPARO
+      xywh {170 10 140 35} box BORDER_BOX color 7 labelsize 18
+      code3 {switch (Idioma) {case ESP:o->label("DISPARO");break; case ING:o->label("TRIGGER");break; case ITA:o->label("TRIGGER");break;}}
+    }
+    Fl_Box EtiquetaAvanzado {
+      label AVANZADO
+      xywh {495 10 295 35} box BORDER_BOX color 7 labelsize 18
+      code0 {if (ConfigAvanzada) {o->activate();} else {o->deactivate();}}
+      code3 {switch (Idioma) {case ESP:o->label("AVANZADO");break; case ING:o->label("ADVANCED");break; case ITA:o->label("AVANZATO");break;}}
+    }
+    Fl_Box EtiquetaSistema {
+      label SISTEMA
+      xywh {330 10 140 35} box BORDER_BOX color 7 labelsize 18
+      code3 {switch (Idioma) {case ESP:o->label("SISTEMA");break; case ING:o->label("SYSTEM");break; case ITA:o->label("SISTEMA");break;}}
+    }
+    Fl_Box {} {
+      xywh {160 12 1 500} box FLAT_BOX color 19
+    }
+    Fl_Box {} {
+      xywh {320 12 1 500} box FLAT_BOX color 19
+    }
+    Fl_Box {} {
+      xywh {480 12 1 500} box FLAT_BOX color 19
+    }
+    Fl_Counter CounterPeriodo {
+      label {Periodo (us)}
+      callback {PeriodoTrenPulsos = (int) o->value();}
+      xywh {495 70 140 30} box FLAT_BOX color 48 labelsize 12 align 5 when 6 minimum 10 maximum 100000 step 1 textfont 13 textsize 12
+      code0 {o->value(PeriodoTrenPulsos);}
+      code1 {o->lstep(10.0); // fija el incremento de la flecha doble del contador}
+      code2 {if (ConfigAvanzada) {o->activate();} else {o->deactivate();}}
+      code3 {switch (Idioma) {case ESP:o->label("Periodo (us)");break; case ING:o->label("Period (us)");break; case ITA:o->label("Periodo (us)");break;}}
+    }
+    Fl_Counter CounterRetardoLaserOn {
+      label {Retardo Láser On (us)}
+      callback {RetardoLaserOn = (int) o->value();}
+      xywh {495 120 140 30} box FLAT_BOX color 48 labelsize 12 align 5 when 6 minimum 0 maximum 100000 step 1 textfont 13 textsize 12
+      code0 {o->value(RetardoLaserOn);}
+      code1 {o->lstep(10.0); // fija el incremento de la flecha doble del contador}
+      code2 {if (ConfigAvanzada) {o->activate();} else {o->deactivate();}}
+      code3 {switch (Idioma) {case ESP:o->label("Retardo Láser On (us)");break; case ING:o->label("Laser On delay (us)");break; case ITA:o->label("Ritardo Laser On (us)");break;}}
+    }
+    Fl_Counter CounterRetardoLaserOff {
+      label {Retardo Láser Off (us)}
+      callback {RetardoLaserOff = (int) o->value();}
+      xywh {495 170 140 30} box FLAT_BOX color 48 labelsize 12 align 5 when 6 minimum 0 maximum 100000 step 1 textfont 13 textsize 12
+      code0 {o->value(RetardoLaserOff);}
+      code1 {o->lstep(10.0); // fija el incremento de la flecha doble del contador}
+      code2 {if (ConfigAvanzada) {o->activate();} else {o->deactivate();}}
+      code3 {switch (Idioma) {case ESP:o->label("Retardo Láser Off (us)");break; case ING:o->label("Laser Off delay (us)");break; case ITA:o->label("Ritardo Laser Off (us)");break;}}
+    }
+    Fl_Counter CounterCalibracion {
+      label {Calibración (bits/mm)}
+      callback {CalibracionCorreccion = o->value();}
+      xywh {495 420 140 30} box FLAT_BOX color 48 labelsize 12 align 5 when 6 minimum 1 maximum 10000 step 1 textfont 13 textsize 12
+      code0 {o->value(CalibracionCorreccion);}
+      code1 {o->lstep(10.0); // fija el incremento de la flecha doble del contador}
+      code2 {if (ConfigAvanzada) {o->activate();} else {o->deactivate();}}
+      code3 {switch (Idioma) {case ESP:o->label("Calibración (bits/mm)");break; case ING:o->label("Calibration (bits/mm)");break; case ITA:o->label("Calibratura (bits/mm)");break;}}
+    }
+    Fl_Counter CounterVelocidadSalto {
+      label {Velocidad salto (mm/s)}
+      callback {VelocidadSalto = (int) o->value();}
+      xywh {495 220 140 30} box FLAT_BOX color 48 labelsize 12 align 5 when 6 minimum 100 maximum 50000 step 10 textfont 13 textsize 12
+      code0 {o->value(VelocidadSalto);}
+      code1 {o->lstep(100.0); // fija el incremento de la flecha doble del contador}
+      code2 {if (ConfigAvanzada) {o->activate();} else {o->deactivate();}}
+      code3 {switch (Idioma) {case ESP:o->label("Velocidad salto (mm/s)");break; case ING:o->label("Jump speed (mm/s)");break; case ITA:o->label("Velocità salto (mm/s)");break;}}
+    }
+    Fl_Counter CounterRetardoSalto {
+      label {Retardo salto (us)}
+      callback {RetardoSalto = (int) o->value();}
+      xywh {495 270 140 30} box FLAT_BOX color 48 labelsize 12 align 5 when 6 minimum 0 maximum 100000 step 1 textfont 13 textsize 12
+      code0 {o->value(RetardoSalto);}
+      code1 {o->lstep(10.0); // fija el incremento de la flecha doble del contador}
+      code2 {if (ConfigAvanzada) {o->activate();} else {o->deactivate();}}
+      code3 {switch (Idioma) {case ESP:o->label("Retardo salto (us)");break; case ING:o->label("Jump delay (us)");break; case ITA:o->label("Ritardo salto (us)");break;}}
+    }
+    Fl_Counter CounterRetardoPoligono {
+      label {Retardo polígono (us)}
+      callback {RetardoPoligono = (int) o->value();}
+      xywh {495 320 140 30} box FLAT_BOX color 48 labelsize 12 align 5 when 6 minimum 0 maximum 100000 step 1 textfont 13 textsize 12
+      code0 {o->value(RetardoPoligono);}
+      code1 {o->lstep(10.0); // fija el incremento de la flecha doble del contador}
+      code2 {if (ConfigAvanzada) {o->activate();} else {o->deactivate();}}
+      code3 {switch (Idioma) {case ESP:o->label("Retardo polígono (us)");break; case ING:o->label("Poligon delay (us)");break; case ITA:o->label("Ritardo poligono (us)");break;}}
+    }
+    Fl_Counter CounterRetardoMarcaje {
+      label {Retardo marcaje (us)}
+      callback {RetardoMarcaje = (int) o->value();}
+      xywh {495 370 140 30} box FLAT_BOX color 48 labelsize 12 align 5 when 6 minimum 0 maximum 100000 step 1 textfont 13 textsize 12
+      code0 {o->value(RetardoMarcaje);}
+      code1 {o->lstep(10.0); // fija el incremento de la flecha doble del contador}
+      code2 {if (ConfigAvanzada) {o->activate();} else {o->deactivate();}}
+      code3 {switch (Idioma) {case ESP:o->label("Retardo marcaje (us)");break; case ING:o->label("Mark delay (us)");break; case ITA:o->label("Ritardo marcatura (us)");break;}}
+    }
+    Fl_Counter CounterControlGalvos {
+      label {Control galvos (V)}
+      callback {VGalvoRef_MaximoBits = o->value();}
+      xywh {650 270 140 30} box FLAT_BOX color 9 selection_color 9 labelsize 12 align 5 when 6 minimum 0.1 maximum 10 step 0.1 textfont 13 textsize 12
+      code0 {o->value(VGalvoRef_MaximoBits);}
+      code1 {o->lstep(1.0); // fija el incremento de la flecha doble del contador}
+      code2 {if (ConfigAvanzada) {o->activate();} else {o->deactivate();}}
+      code3 {switch (Idioma) {case ESP:o->label("Control galvos (V)");break; case ING:o->label("Galvo control (V)");break; case ITA:o->label("Galvos controllo (V)");break;}}
+    }
+    Fl_Choice ChoiceValorActivacionGalvos {
+      label {Activación galvos}
+      callback {ValorActivacionGalvos = o->value();} open
+      xywh {650 220 140 30} down_box DOWN_BOX color 9 selection_color 7 labelsize 12 align 5 when 6 textfont 13 textsize 12
+      code0 {o->add("0"); o->add("1");//inicialización}
+      code1 {o->value(ValorActivacionGalvos);}
+      code2 {if (ConfigAvanzada) {o->activate();} else {o->deactivate();}}
+      code3 {switch (Idioma) {case ESP:o->label("Activación Galvos");break; case ING:o->label("Galvos Activation");break; case ITA:o->label("Attivazione Galvos");break;}}
+    } {}
+    Fl_Choice ChoiceOrientacion {
+      label {Orientación}
+      callback {switch (o->value()) {
+
+	case 0:
+	Orientacion = 0;
+	break; 
+	
+	case 1:
+	Orientacion = 90;
+	break; 
+	
+	case 2:
+	Orientacion = 180;
+	break; 
+	
+	case 3:
+	Orientacion = 270;
+	break;
+
+}} open
+      xywh {10 70 140 30} down_box DOWN_BOX selection_color 7 labelsize 12 align 5 when 6 textfont 13 textsize 12
+      code0 {o->add("0"); o->add("90"); o->add("180"); o->add("270");//inicialización}
+      code1 {switch (Orientacion) {case 0:o->value(0);break; case 90:o->value(1);break; case 180:o->value(2);break; case 270:o->value(3);break;}}
+      code3 {switch (Idioma) {case ESP:o->label("Orientación");break; case ING:o->label("Orientation");break; case ITA:o->label("Orientamento");break;}}
+    } {}
+    Fl_Choice ChoiceAvance {
+      label Avance
+      callback {switch (o->value()) {
+
+	case 0:
+	Avance = 0;
+	break; 
+	
+	case 1:
+	Avance = 90;
+	break; 
+	
+	case 2:
+	Avance = 180;
+	break; 
+	
+	case 3:
+	Avance = 270;
+	break;
+
+}} open
+      xywh {10 120 140 30} down_box DOWN_BOX selection_color 7 labelsize 12 align 5 when 6 textsize 12
+      code0 {o->add("0"); o->add("90"); o->add("180"); o->add("270");//inicialización}
+      code1 {switch (Avance) {case 0:o->value(0);break; case 90:o->value(1);break; case 180:o->value(2);break; case 270:o->value(3);break;}}
+      code3 {switch (Idioma) {case ESP:o->label("Avance");break; case ING:o->label("Progress");break; case ITA:o->label("Avanzamento");break;}}
+    } {}
+    Fl_Choice ChoiceDisparoFotocelula {
+      label {Valor Disparo}
+      callback {ValorDisparo = o->value();} open
+      xywh {170 270 140 30} down_box DOWN_BOX selection_color 7 labelsize 12 align 5 when 6 textfont 13 textsize 12
+      code0 {o->add("0"); o->add("1");//inicialización}
+      code1 {o->value(ValorDisparo);}
+      code2 {if (TipoDisparo == DISPAROEXTERNO) {o->activate();} else {o->deactivate();}}
+      code3 {switch (Idioma) {case ESP:o->label("Valor disparo");break; case ING:o->label("Trigger value");break; case ITA:o->label("Valore trigger");break;}}
+    } {}
+    Fl_Counter CounterRetardoDisparo {
+      label {Retardo disparo (mm)}
+      callback {RetardoDisparo = (int)o->value();}
+      xywh {170 170 140 30} box FLAT_BOX color 48 labelsize 12 align 5 when 6 minimum 0 maximum 1000 step 1 textfont 13 textsize 12
+      code0 {o->value(RetardoDisparo);}
+      code1 {o->lstep(10.0); // fija el incremento de la flecha doble del contador}
+      code2 {if (TipoDisparo == DISPAROEXTERNO) {o->activate();} else {o->deactivate();}}
+      code3 {switch (Idioma) {case ESP:o->label("Retardo disparo (mm)");break; case ING:o->label("trigger delay (mm)");break; case ITA:o->label("Ritardo trigger (mm)");break;}}
+    }
+    Fl_Counter CounterLecturasConsecutivas {
+      label {Lecturas consecutivas}
+      callback {MinimoLecturasConsecutivas = (int)o->value();}
+      xywh {170 220 140 30} box FLAT_BOX color 48 labelsize 12 align 5 when 6 minimum 1 maximum 1000 step 1 value 1 textfont 13 textsize 12
+      code0 {o->value(MinimoLecturasConsecutivas);}
+      code1 {o->lstep(10.0); // fija el incremento de la flecha doble del contador}
+      code2 {if (TipoDisparo == DISPAROEXTERNO) {o->activate();} else {o->deactivate();}}
+      code3 {switch (Idioma) {case ESP:o->label("Lecturas consecutivas");break; case ING:o->label("Consecutive readings");break; case ITA:o->label("Letture consecutive");break;}}
+    }
+    Fl_Counter CounterSeparacionEntreDisparos {
+      label {Separación (mm)}
+      callback {// Cambia la separación entre disparos
+SeparacionEntreDisparos_mm = (int)o->value();}
+      xywh {170 120 140 30} box FLAT_BOX color 48 labelsize 12 align 133 when 6 minimum 1 maximum 10000 step 1 value 1 textfont 13 textsize 12
+      code0 {o->value(SeparacionEntreDisparos_mm); //inicialización}
+      code1 {o->lstep(10.0); // fija el incremento de la flecha doble del contador}
+      code2 {if (TipoDisparo == DISPAROEXTERNO) {o->deactivate();} else {o->activate();}}
+      code3 {switch (Idioma) {case ESP:o->label("Separación (mm)");break; case ING:o->label("Separation (mm)");break; case ITA:o->label("Separazione (mm)");break;}}
+    }
+    Fl_Choice ChoiceTipoDisparo {
+      label {Tipo disparo}
+      callback {TipoDisparo = o->value();
+
+if (TipoDisparo == 0) {		// externo
+
+	ChoiceDisparoFotocelula->activate();
+	CounterLecturasConsecutivas->activate();
+	CounterRetardoDisparo->activate();
+	CounterSeparacionEntreDisparos->deactivate();
+	
+}
+
+else if (TipoDisparo == 1) {	// interno
+
+	ChoiceDisparoFotocelula->deactivate();
+	CounterLecturasConsecutivas->deactivate();
+	CounterRetardoDisparo->deactivate();
+	CounterSeparacionEntreDisparos->activate();
+	
+}} open
+      xywh {170 70 140 30} down_box DOWN_BOX selection_color 7 labelsize 12 align 5 when 6 textfont 13 textsize 12
+      code0 {int i; for (i=0; i<2; i++) {o->add(ValoresTipoDisparo[Idioma][i]);}//inicialización}
+      code1 {o->value(TipoDisparo);}
+      code3 {switch (Idioma) {case ESP:o->label("Tipo disparo");break; case ING:o->label("Trigger type");break; case ITA:o->label("Tipo trigger");break;}}
+    } {}
+    Fl_Choice ChoiceMarcajeDinamico {
+      label {Marcaje dinámico}
+      callback {MarcajeDinamicoActivo = o->value();
+
+if (MarcajeDinamicoActivo == 0) {
+
+	CounterEncoder->deactivate();
+	CounterVelocidadLinea->deactivate();
+	
+}
+
+else if (MarcajeDinamicoActivo == 1) {
+
+	CounterEncoder->activate();
+	CounterVelocidadLinea->deactivate();
+	
+}
+
+else if (MarcajeDinamicoActivo == 2) {
+
+	CounterEncoder->deactivate();
+	CounterVelocidadLinea->activate();
+
+}} open
+      xywh {10 320 140 30} down_box DOWN_BOX selection_color 7 labelsize 12 align 5 when 6 textfont 13 textsize 12
+      code0 {int i; for (i=0; i<3; i++) {o->add(ValoresDinamico[Idioma][i]);}//inicialización}
+      code1 {o->value(MarcajeDinamicoActivo);}
+      code3 {switch (Idioma) {case ESP:o->label("Marcaje dinámico");break; case ING:o->label("Dynamic marking");break; case ITA:o->label("Marcatura dinamica");break;}}
+    } {}
+    Fl_Counter CounterEncoder {
+      label {Encoder (cuentas/mm)}
+      callback {CalibracionEncoder = o->value();}
+      xywh {10 370 140 30} box FLAT_BOX color 48 labelsize 12 align 5 when 6 minimum 1 maximum 10000 step 0.1 textfont 13 textsize 12
+      code0 {o->value(CalibracionEncoder);}
+      code1 {if (MarcajeDinamicoActivo != 1) {o->deactivate();}}
+      code3 {switch (Idioma) {case ESP:o->label("Encoder (cuentas/mm)");break; case ING:o->label("Encoder (counts/mm)");break; case ITA:o->label("Encoder (conta/mm)");break;}}
+    }
+    Fl_Counter CounterVelocidadLinea {
+      label {Velocidad línea (m/min)}
+      callback {VelocidadLinea = o->value();}
+      xywh {10 420 140 30} box FLAT_BOX color 48 labelsize 12 align 5 when 6 minimum 0.1 maximum 1000 step 0.1 textfont 13 textsize 12
+      code0 {o->value(VelocidadLinea);}
+      code1 {if (MarcajeDinamicoActivo != 2) {o->deactivate();}}
+      code3 {switch (Idioma) {case ESP:o->label("Velocidad línea (m/min)");break; case ING:o->label("Line speed (m/min)");break; case ITA:o->label("Velocità linea (m/min)");break;}}
+    }
+    Fl_Choice ChoiceIdioma {
+      label Idioma
+      callback {int i;
+
+// cambia el idioma
+Idioma = o->value();
+
+// Cambia todas las etiquetas:
+switch (Idioma) {
+
+	case ESP:
+	EtiquetaLinea->label("LÍNEA");
+	ChoiceOrientacion->label("Orientación");
+	ChoiceAvance->label("Avance");
+	ChoiceCentrado->label("Centrado");
+	ChoiceReverso->label("Impresión en reverso");
+	ChoiceMarcajeDinamico->label("Marcaje dinámico");
+	CounterEncoder->label("Encoder (cuentas/mm)");
+	CounterVelocidadLinea->label("Velocidad línea (m/min)");
+	
+	EtiquetaDisparo->label("DISPARO");
+	ChoiceTipoDisparo->label("Tipo disparo");
+	ChoiceDisparoFotocelula->label("Valor disparo");
+	CounterLecturasConsecutivas->label("Lecturas consecutivas");
+	CounterRetardoDisparo->label("Retardo disparo (mm)");
+	CounterSeparacionEntreDisparos->label("Separación (mm)");
+	
+	EtiquetaAvanzado->label("AVANZADO");
+	CounterPeriodo->label("Periodo (us)");
+	CounterRetardoLaserOn->label("Retardo Láser On (us)");
+	CounterRetardoLaserOff->label("Retardo Láser Off (us)");
+	CounterCalibracion->label("Calibración (bits/mm)");
+	CounterSpot->label("Spot (micras)");
+	
+	CounterVelocidadSalto->label("Velocidad salto (mm/s)");
+	CounterRetardoSalto->label("Retardo salto (us)");
+	CounterRetardoPoligono->label("Retardo polígono (us)");
+	CounterRetardoMarcaje->label("Retardo marcaje (us)");
+	ChoiceValorActivacionGalvos->label("Activación Galvos");
+	CounterControlGalvos->label("Control galvos (V)");
+	
+	EtiquetaSistema->label("SISTEMA");
+	ChoiceServicioTecnico->label("Servicio técnico");
+	ChoiceIdioma->label("Idioma");
+	CounterPeriodoRT->label("Periodo RT (us)");
+	ChoiceControlPuertoSerie->label("Control Puerto Serie");
+	ChoiceExtractor->label("Extractor");
+	ChoiceErrorCampo->label("Error de campo");
+	ChoiceErrorGalvos->label("Error de galvos");	
+	ChoiceControlEstrategia->label("Estrategia de marcaje");
+	BotonTurnos->label("Editar turnos");
+	BotonCambiarFechaHora->label("Fecha y hora");
+	BotonImportarGraficos->label("Importar gráficos");
+	
+	ChoiceControl->label("Sistema de Control");
+	
+	ChoiceTipoLaser->label("Tipo de laser");
+	ChoiceFicheroCorreccionActivo->label("Fichero Correccion");
+	
+	BotonCancelar->label("Cancelar");
+	BotonAceptar->label("Aceptar");	
+	
+	// Ventana de turnos
+	CounterHoraInicioTurno0->label("Hora inicio");
+	CounterMinutoInicioTurno0->label("Minuto inicio");
+	CounterHoraFinTurno0->label("Hora fin");
+	CounterMinutoFinTurno0->label("Minuto fin");
+	CuadroTextoTurno0->label("Texto");
+	Aceptar_VentanaTurnos->label("Aceptar");
+	Cancelar_VentanaTurnos->label("Cancelar");
+	
+	break; 
+	
+	case ING:
+	EtiquetaLinea->label("LINE");
+	ChoiceOrientacion->label("Orientation");
+	ChoiceAvance->label("Progress");
+	ChoiceCentrado->label("Centered");
+	ChoiceReverso->label("Back printing");
+	ChoiceMarcajeDinamico->label("Dynamic marking");
+	CounterEncoder->label("Encoder (counts/mm)");
+	CounterVelocidadLinea->label("Line speed (m/min)");
+
+	EtiquetaDisparo->label("TRIGGER");
+	ChoiceTipoDisparo->label("Trigger type");
+	ChoiceDisparoFotocelula->label("Trigger value");
+	CounterLecturasConsecutivas->label("Consecutive readings");
+	CounterRetardoDisparo->label("Trigger delay (mm)");
+	CounterSeparacionEntreDisparos->label("Separation (mm)");
+
+	EtiquetaAvanzado->label("ADVANCED");
+	CounterPeriodo->label("Period (us)");
+	CounterRetardoLaserOn->label("Laser On delay (us)");
+	CounterRetardoLaserOff->label("Laser Off delay (us)");
+	CounterCalibracion->label("Calibration (bits/mm)");
+	CounterSpot->label("Spot (microns)");
+
+	CounterVelocidadSalto->label("Jump speed (mm/s)");
+	CounterRetardoSalto->label("Jump delay (us)");
+	CounterRetardoPoligono->label("Poligon delay (us)");
+	CounterRetardoMarcaje->label("Mark delay (us)");
+	ChoiceValorActivacionGalvos->label("Galvos Activation");
+	CounterControlGalvos->label("Galvo control (V)");
+	
+	EtiquetaSistema->label("SYSTEM");
+	ChoiceServicioTecnico->label("Technical service");
+	ChoiceIdioma->label("Language");
+	CounterPeriodoRT->label("RT Period (us)");
+	ChoiceControlPuertoSerie->label("Serial Port Control");
+	ChoiceExtractor->label("Extractor");
+	ChoiceErrorCampo->label("Field error");
+	ChoiceErrorGalvos->label("Galvo error");
+	ChoiceControlEstrategia->label("Marking strategy");
+	BotonTurnos->label("Edit shifts");
+	BotonCambiarFechaHora->label("Date and time");
+	BotonImportarGraficos->label("Import graphics");
+
+	ChoiceControl->label("Control System");
+
+	ChoiceTipoLaser->label("Laser Type");
+	ChoiceFicheroCorreccionActivo->label("Correction file");
+	
+	BotonCancelar->label("Cancel");
+	BotonAceptar->label("Accept");
+
+	// Ventana de turnos
+	CounterHoraInicioTurno0->label("Starting hour");
+	CounterMinutoInicioTurno0->label("Starting minute");
+	CounterHoraFinTurno0->label("Ending hour");
+	CounterMinutoFinTurno0->label("Ending minute");
+	CuadroTextoTurno0->label("Text");
+	Aceptar_VentanaTurnos->label("Accept");
+	Cancelar_VentanaTurnos->label("Cancel");
+	
+	break; 
+
+	case ITA:
+	EtiquetaLinea->label("LINEA");
+	ChoiceOrientacion->label("Orientamento");
+	ChoiceAvance->label("Avanzamento");
+	ChoiceCentrado->label("Centrato");
+	ChoiceReverso->label("Reversi");
+	ChoiceMarcajeDinamico->label("Marcatura dinamica");
+	CounterEncoder->label("Encoder (conta/mm)");
+	CounterVelocidadLinea->label("Velocità linea (m/min)");
+
+	EtiquetaDisparo->label("TRIGGER");
+	ChoiceTipoDisparo->label("Tipo trigger");
+	ChoiceDisparoFotocelula->label("Valore trigger");
+	CounterLecturasConsecutivas->label("Letture consecutive");
+	CounterRetardoDisparo->label("Ritardo trigger (mm)");
+	CounterSeparacionEntreDisparos->label("Separazione (mm)");
+
+	EtiquetaAvanzado->label("AVANZATO");
+	CounterPeriodo->label("Periodo (us)");
+	CounterRetardoLaserOn->label("Ritardo Laser On (us)");
+	CounterRetardoLaserOff->label("Ritardo Laser Off (us)");
+	CounterCalibracion->label("Calibratura (bits/mm)");
+	CounterSpot->label("Spot (microns)");
+
+	CounterVelocidadSalto->label("Velocità salto (mm/s)");
+	CounterRetardoSalto->label("Ritardo salto (us)");
+	CounterRetardoPoligono->label("Ritardo poligono (us)");
+	CounterRetardoMarcaje->label("Ritardo marcatura (us)");
+	ChoiceValorActivacionGalvos->label("Attivazione Galvos");	
+	CounterControlGalvos->label("Galvos controllo (V)");
+
+	EtiquetaSistema->label("SISTEMA");
+	ChoiceServicioTecnico->label("Servizio tecnica");
+	ChoiceIdioma->label("Lingua");
+	CounterPeriodoRT->label("Periodo RT (us)");
+	ChoiceControlPuertoSerie->label("Controllo Porta Seriale");
+	ChoiceExtractor->label("Aspirazione");
+	ChoiceErrorCampo->label("Errore campo");
+	ChoiceErrorGalvos->label("Errore galvos");
+	ChoiceControlEstrategia->label("Marcatura strategia");
+	BotonTurnos->label("Edit turni");
+	BotonCambiarFechaHora->label("Data e ora");
+	BotonImportarGraficos->label("Importare logos");
+
+	ChoiceControl->label("Sistema de Controllo");
+
+	ChoiceTipoLaser->label("Tipo di laser");
+	ChoiceFicheroCorreccionActivo->label("Fichero Correzzione");
+	
+	BotonCancelar->label("Annulla");
+	BotonAceptar->label("Accettare");
+
+	// Ventana de turnos
+	CounterHoraInicioTurno0->label("Ora inizio");
+	CounterMinutoInicioTurno0->label("Minuti inizio");
+	CounterHoraFinTurno0->label("Ora fine");
+	CounterMinutoFinTurno0->label("Minuti fine");
+	CuadroTextoTurno0->label("Texti");
+	Aceptar_VentanaTurnos->label("Accettare");
+	Cancelar_VentanaTurnos->label("Annulla");
+	
+	break;
+
+}
+
+// rellena los valores en el idioma que corresponda
+ChoiceMarcajeDinamico->clear();
+for (i=0; i<3; i++) {
+	ChoiceMarcajeDinamico->add(ValoresDinamico[Idioma][i]);
+}
+ChoiceMarcajeDinamico->value(MarcajeDinamicoActivo);
+
+ChoiceTipoDisparo->clear();
+for (i=0; i<2; i++) {
+	ChoiceTipoDisparo->add(ValoresTipoDisparo[Idioma][i]);
+}
+ChoiceTipoDisparo->value(TipoDisparo);
+
+ChoiceIdioma->clear();
+for (i=0; i<3; i++) {
+	ChoiceIdioma->add(ValoresIdioma[Idioma][i]);
+}
+ChoiceIdioma->value(Idioma);
+
+ChoiceControl->clear();
+for (i=0; i<2; i++) {
+	ChoiceControl->add(ValoresControl[Idioma][i]);
+}
+ChoiceControl->value(Control);
+
+
+// Valores activación
+ChoiceServicioTecnico->clear();
+ChoiceExtractor->clear();
+ChoiceErrorCampo->clear();
+ChoiceErrorGalvos->clear();
+ChoiceCentrado->clear();
+ChoiceReverso->clear();
+ChoiceControlPuertoSerie->clear();
+
+for (i=0; i<2; i++) {
+	ChoiceServicioTecnico->add(ValoresActivacion[Idioma][i]);
+	ChoiceExtractor->add(ValoresActivacion[Idioma][i]);
+	ChoiceErrorCampo->add(ValoresActivacion[Idioma][i]);
+	ChoiceErrorGalvos->add(ValoresActivacion[Idioma][i]);
+	ChoiceCentrado->add(ValoresActivacion[Idioma][i]);
+	ChoiceReverso->add(ValoresActivacion[Idioma][i]);	
+	ChoiceControlPuertoSerie->add(ValoresActivacion[Idioma][i]);
+	ChoiceControlEstrategia->add(ValoresActivacion[Idioma][i]);
+}	
+
+ChoiceServicioTecnico->value(ServicioTecnico);
+ChoiceExtractor->value(ExtractorActivado);
+ChoiceErrorCampo->value(ControlarErrorCampo);
+ChoiceErrorGalvos->value(ControlarErrorGalvos);
+ChoiceCentrado->value(Centrado);
+ChoiceReverso->value(Reverso);
+ChoiceControlPuertoSerie->value(PuertoSerieActivo);
+
+ChoiceControlEstrategia->clear();
+
+for (i=0; i<3; i++) {
+	ChoiceControlEstrategia->add(ValoresEstrategia[Idioma][i]);
+}
+
+ChoiceControlEstrategia->value(Estrategia);} open
+      xywh {330 120 140 30} down_box DOWN_BOX selection_color 7 labelsize 12 align 5 when 6 textfont 13 textsize 12
+      code0 {int i; for (i=0; i<3; i++) {o->add(ValoresIdioma[Idioma][i]);}//inicialización}
+      code1 {o->value(Idioma);}
+      code3 {switch (Idioma) {case ESP:o->label("Idioma");break; case ING:o->label("Language");break; case ITA:o->label("Lingua");break;}}
+    } {}
+    Fl_Button BotonCambiarFechaHora {
+      label {Fecha y hora}
+      callback {// lanza una ventana emergente para cambiar la fecha y la hora
+switch (Idioma) {
+
+	case ESP:
+	system("kdeinit_wrapper kcmshell --lang es clock");
+	break; 
+	
+	case ING:
+	system("kdeinit_wrapper kcmshell --lang en_US clock");
+	break; 
+	
+	case ITA:
+	system("kdeinit_wrapper kcmshell --lang it clock");
+	break;
+	
+}
+
+// actualiza el reloj de la BIOS
+system("mount / -o rw,remount");
+system("hwclock --systohc");
+system("mount / -o ro,remount");}
+      xywh {330 475 140 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX color 47 labelsize 12 align 16
+      code3 {switch (Idioma) {case ESP:o->label("Fecha y hora");break; case ING:o->label("Date and time");break; case ITA:o->label("Data e ora");break;}}
+    }
+    Fl_Counter CounterPeriodoRT {
+      label {Periodo RT (us)}
+      callback {PERIODO_MICROSEGUNDOS = (int) o->value();}
+      xywh {650 120 140 30} box FLAT_BOX color 9 selection_color 9 labelsize 12 align 5 when 6 minimum 10 maximum 100000 step 1 textfont 13 textsize 12
+      code0 {o->value(PERIODO_MICROSEGUNDOS);}
+      code1 {o->lstep(10.0); // fija el incremento de la flecha doble del contador}
+      code2 {if (ConfigAvanzada) {o->activate();} else {o->deactivate();}}
+      code3 {switch (Idioma) {case ESP:o->label("Periodo RT (us)");break; case ING:o->label("RT Period (us)");break; case ITA:o->label("Periodo RT (us)");break;}}
+    }
+    Fl_Choice ChoiceExtractor {
+      label Extractor
+      callback {ExtractorActivado = o->value();} open
+      xywh {330 270 140 30} down_box DOWN_BOX selection_color 7 labelsize 12 align 5 when 6 textfont 13 textsize 12
+      code0 {int i; for (i=0; i<2; i++) {o->add(ValoresActivacion[Idioma][i]);}//inicialización}
+      code1 {o->value(ExtractorActivado);}
+      code3 {switch (Idioma) {case ESP:o->label("Extractor");break; case ING:o->label("Extractor");break; case ITA:o->label("Aspirazione");break;}}
+    } {}
+    Fl_Choice ChoiceServicioTecnico {
+      label {Servicio técnico}
+      callback {ServicioTecnico = o->value();} open
+      xywh {330 70 140 30} down_box DOWN_BOX selection_color 7 labelsize 12 align 5 when 6 textfont 13 textsize 12
+      code0 {int i; for (i=0; i<2; i++) {o->add(ValoresActivacion[Idioma][i]);}//inicialización}
+      code1 {o->value(ServicioTecnico);}
+      code3 {switch (Idioma) {case ESP:o->label("Servicio técnico");break; case ING:o->label("Technical service");break; case ITA:o->label("Servizio tecnica");break;}}
+    } {}
+    Fl_Counter CounterSpot {
+      label {Spot (micras)}
+      callback {Spot = (int)o->value();}
+      xywh {495 470 140 30} box FLAT_BOX color 48 labelsize 12 align 5 when 6 minimum 1 maximum 10000 step 1 textfont 13 textsize 12
+      code0 {o->value(Spot);}
+      code1 {o->lstep(10.0); // fija el incremento de la flecha doble del contador}
+      code2 {if (ConfigAvanzada) {o->activate();} else {o->deactivate();}}
+      code3 {switch (Idioma) {case ESP:o->label("Spot (micras)");break; case ING:o->label("Spot (microns)");break; case ITA:o->label("Spot (microns)");break;}}
+    }
+    Fl_Button BotonImportarGraficos {
+      label {Importar gráficos}
+      callback {//copia los archivos *.plt que haya en la raiz de dispositivos usb
+system("mount / -o rw,remount");
+system("cp /media/*/*.plt /rootFLS/itaca");
+system("cp /media/*/*.plt /root/itaca");
+system("mount / -o ro,remount");}
+      xywh {330 440 140 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX color 47 labelsize 12 align 16
+      code3 {switch (Idioma) {case ESP:o->label("Importar gráficos");break; case ING:o->label("Import graphics");break; case ITA:o->label("Importare logos");break;}}
+    }
+    Fl_Choice ChoiceControlPuertoSerie {
+      label {Control Puerto Serie}
+      callback {PuertoSerieActivo = o->value();} open
+      xywh {330 220 140 30} down_box DOWN_BOX selection_color 7 labelsize 12 align 5 when 6 textfont 13 textsize 12
+      code0 {int i; for (i=0; i<2; i++) {o->add(ValoresActivacion[Idioma][i]);}//inicialización}
+      code1 {o->value(PuertoSerieActivo);}
+      code3 {switch (Idioma) {case ESP:o->label("Control Puerto Serie");break; case ING:o->label("Serial Port Control");break; case ITA:o->label("Controllo Porta Seriale");break;}}
+    } {}
+    Fl_Choice ChoiceCentrado {
+      label Centrado
+      callback {Centrado = o->value();} open
+      xywh {10 170 140 30} down_box DOWN_BOX selection_color 7 labelsize 12 align 5 when 6 textfont 13 textsize 12
+      code0 {int i; for (i=0; i<2; i++) {o->add(ValoresActivacion[Idioma][i]);}//inicialización}
+      code1 {o->value(Centrado);}
+      code3 {switch (Idioma) {case ESP:o->label("Centrado");break; case ING:o->label("Centered");break; case ITA:o->label("Centrato");break;}}
+    } {}
+    Fl_Button BotonAceptar {
+      label Aceptar
+      callback {if (ControlAcceso) {
+
+	// Desactiva la ventana principal para que resalte la ventana emergente que saldrá a continuación
+	VentanaConfiguracion->deactivate();
+
+	// Cargar la ventana de password
+	VentanaPassword->show();
+
+}
+
+else {
+
+	// guarda los datos modificados en /root/itaca/itaca.conf
+	escribir_configuracion();
+
+	// actualiza el disco
+	system("mount / -o rw,remount");
+	system("cp /root/itaca/itaca.conf /rootFLS/itaca/itaca.conf");
+	system("mount / -o ro,remount");
+
+	// sale del programa	
+	exit(0);
+	
+}}
+      xywh {10 520 310 45} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX color 2 selection_color 7 labelsize 19 when 6
+      code3 {switch (Idioma) {case ESP:o->label("Aceptar");break; case ING:o->label("Accept");break; case ITA:o->label("Acettare");break;}}
+    }
+    Fl_Button BotonCancelar {
+      label Cancelar
+      callback {// sale del programa sin grabar los cambios	
+exit(0);}
+      xywh {480 520 310 45} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX color 1 selection_color 7 labelsize 19 when 6
+      code3 {switch (Idioma) {case ESP:o->label("Cancelar");break; case ING:o->label("Cancel");break; case ITA:o->label("Annulla");break;}}
+    }
+    Fl_Choice ChoiceReverso {
+      label {Impresión en reverso}
+      callback {Reverso = o->value();} open
+      xywh {10 220 140 30} down_box DOWN_BOX selection_color 7 labelsize 12 align 5 when 6 textfont 13 textsize 12
+      code0 {int i; for (i=0; i<2; i++) {o->add(ValoresActivacion[Idioma][i]);}//inicialización}
+      code1 {o->value(Reverso);}
+      code3 {switch (Idioma) {case ESP:o->label("Impresión en reverso");break; case ING:o->label("Back printing");break; case ITA:o->label("Reversi");break;}}
+    } {}
+    Fl_Box {} {
+      label {Itaca Config  -  Fotonica Laser Systems}
+      xywh {10 576 780 24} labelfont 10 labelsize 12 labelcolor 8
+    }
+    Fl_Choice ChoiceControlEstrategia {
+      label {Estrategia de marcaje}
+      callback {Estrategia = o->value();} open
+      xywh {330 170 140 30} down_box DOWN_BOX selection_color 7 labelsize 12 align 5 when 6 textfont 13 textsize 12
+      code0 {int i; for (i=0; i<4; i++) {o->add(ValoresEstrategia[Idioma][i]);}//inicialización}
+      code1 {o->value(Estrategia);}
+      code3 {switch (Idioma) {case ESP:o->label("Estrategia de marcaje");break; case ING:o->label("Marking strategy");break; case ITA:o->label("Marcatura strategia");break;}}
+    } {}
+    Fl_Choice ChoiceControl {
+      label {Sistema de Control}
+      callback {Control = o->value();} open
+      xywh {650 70 140 30} down_box DOWN_BOX color 9 selection_color 7 labelsize 12 align 5 when 6 textfont 13 textsize 12
+      code0 {int i; for (i=0; i<2; i++) {o->add(ValoresControl[Idioma][i]);}//inicialización}
+      code1 {o->value(Control);}
+      code2 {if (ConfigAvanzada) {o->activate();} else {o->deactivate();}}
+      code3 {switch (Idioma) {case ESP:o->label("Sistema de Control");break; case ING:o->label("Control System");break; case ITA:o->label("Sistema de Controllo");break;}}
+    } {}
+    Fl_Choice ChoiceErrorCampo {
+      label {Error de campo}
+      callback {ControlarErrorCampo = o->value();} open
+      xywh {330 320 140 30} down_box DOWN_BOX selection_color 7 labelsize 12 align 5 when 6 textfont 13 textsize 12
+      code0 {int i; for (i=0; i<2; i++) {o->add(ValoresActivacion[Idioma][i]);}//inicialización}
+      code1 {o->value(ControlarErrorCampo);}
+      code3 {switch (Idioma) {case ESP:o->label("Error de campo");break; case ING:o->label("Field error");break; case ITA:o->label("Errore campo");break;}}
+    } {}
+    Fl_Choice ChoiceErrorGalvos {
+      label {Error de galvos}
+      callback {ControlarErrorGalvos = o->value();} open
+      xywh {330 370 140 30} down_box DOWN_BOX selection_color 7 labelsize 12 align 5 when 6 textfont 13 textsize 12
+      code0 {int i; for (i=0; i<2; i++) {o->add(ValoresActivacion[Idioma][i]);}//inicialización}
+      code1 {o->value(ControlarErrorGalvos);}
+      code3 {switch (Idioma) {case ESP:o->label("Error de galvos");break; case ING:o->label("Galvo error");break; case ITA:o->label("Errore galvos");break;}}
+    } {}
+    Fl_Button BotonTurnos {
+      label {Editar turnos}
+      callback {// Carga los datos y muestra la ventana de edición de turnos
+CargarVentanaTurnos();}
+      xywh {330 405 140 30} box PLASTIC_THIN_UP_BOX down_box PLASTIC_THIN_DOWN_BOX color 47 labelsize 12 align 16
+      code3 {switch (Idioma) {case ESP:o->label("Editar turnos");break; case ING:o->label("Edit shifts");break; case ITA:o->label("Edit turni");break;}}
+    }
+    Fl_Choice ChoiceTipoLaser {
+      label {Tipo de Laser}
+      callback {TipoLaser = o->value();} open
+      xywh {650 320 140 30} down_box DOWN_BOX labelsize 12 align 5 when 6 textsize 12
+      code0 {int i; for (i=0; i<2; i++) {o->add(ValoresTipoLaser[Idioma][i]);}//inicialización}
+      code1 {o->value(TipoLaser);}
+      code2 {if (ConfigAvanzada) {o->activate();} else {o->deactivate();}}
+      code3 {switch (Idioma) {case ESP:o->label("Tipo de Laser");break; case ING:o->label("Laser Type");break; case ITA:o->label("Tipo Laser");break;}}
+    } {}
+    Fl_Choice ChoiceFicheroCorreccionActivo {
+      label FicheroCorreccionActivo
+      callback {FicheroCorreccionActivo = o->value();} open
+      xywh {650 370 140 30} down_box DOWN_BOX labelsize 12 align 5 when 6 textsize 12
+      code0 {int i; for (i=0; i<2; i++) {o->add(ValoresFicheroCorreccionActivo[Idioma][i]);}//inicialización}
+      code1 {o->value(FicheroCorreccionActivo);}
+      code2 {if (ConfigAvanzada) {o->activate();} else {o->deactivate();}}
+      code3 {switch (Idioma) {case ESP:o->label("Fichero Correccion");break; case ING:o->label("Correction File");break; case ITA:o->label("Fichero Correzzione");break;}}
+    } {}
+  }
+} 
+
+Function {Make_Window_Password()} {C
+} {
+  Fl_Window VentanaPassword {
+    callback {VentanaConfiguracion->hide();
+o->show();}
+    xywh {212 140 460 460} type Double box BORDER_BOX color 255 selection_color 7 when 6 modal noborder size_range {460 460 460 460} visible
+  } {
+    Fl_Output CuadroTextoPassword {
+      label {Contraseña:}
+      xywh {50 42 355 40} box PLASTIC_THIN_DOWN_BOX color 175 labelfont 8 labelsize 20 align 5 textsize 24
+      code3 {switch (Idioma) {case ESP:o->label("Contraseña:");break; case ING:o->label("Password:");break; case ITA:o->label("Password:");break;}}
+    }
+    Fl_Group GrupoTeclado {
+      xywh {50 95 355 240} box PLASTIC_UP_FRAME color 0
+    } {
+      Fl_Button Boton1p {
+        label 1
+        callback {char txt[25];
+
+// concatena el nuevo carácter en la password
+strcat(Password, "1");
+
+// duplica el texto actual en una nueva variable
+strcpy(txt, CuadroTextoPassword->value());
+
+// concatena un asterisco para mostrar
+strcat(txt, "*");
+
+// asigna el nuevo texto al cuadro de texto
+CuadroTextoPassword->value(txt);}
+        xywh {150 215 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelsize 20
+      }
+      Fl_Button Boton2p {
+        label 2
+        callback {char txt[25];
+
+// concatena el nuevo carácter en la password
+strcat(Password, "2");
+
+// duplica el texto actual en una nueva variable
+strcpy(txt, CuadroTextoPassword->value());
+
+// concatena un asterisco para mostrar
+strcat(txt, "*");
+
+// asigna el nuevo texto al cuadro de texto
+CuadroTextoPassword->value(txt);}
+        xywh {200 215 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelsize 20
+      }
+      Fl_Button Boton3p {
+        label 3
+        callback {char txt[25];
+
+// concatena el nuevo carácter en la password
+strcat(Password, "3");
+
+// duplica el texto actual en una nueva variable
+strcpy(txt, CuadroTextoPassword->value());
+
+// concatena un asterisco para mostrar
+strcat(txt, "*");
+
+// asigna el nuevo texto al cuadro de texto
+CuadroTextoPassword->value(txt);}
+        xywh {250 215 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelsize 20
+      }
+      Fl_Button Boton4p {
+        label 4
+        callback {char txt[25];
+
+// concatena el nuevo carácter en la password
+strcat(Password, "4");
+
+// duplica el texto actual en una nueva variable
+strcpy(txt, CuadroTextoPassword->value());
+
+// concatena un asterisco para mostrar
+strcat(txt, "*");
+
+// asigna el nuevo texto al cuadro de texto
+CuadroTextoPassword->value(txt);}
+        xywh {150 165 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelsize 20
+      }
+      Fl_Button Boton5p {
+        label 5
+        callback {char txt[25];
+
+// concatena el nuevo carácter en la password
+strcat(Password, "5");
+
+// duplica el texto actual en una nueva variable
+strcpy(txt, CuadroTextoPassword->value());
+
+// concatena un asterisco para mostrar
+strcat(txt, "*");
+
+// asigna el nuevo texto al cuadro de texto
+CuadroTextoPassword->value(txt);}
+        xywh {200 165 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelsize 20
+      }
+      Fl_Button Boton6p {
+        label 6
+        callback {char txt[25];
+
+// concatena el nuevo carácter en la password
+strcat(Password, "6");
+
+// duplica el texto actual en una nueva variable
+strcpy(txt, CuadroTextoPassword->value());
+
+// concatena un asterisco para mostrar
+strcat(txt, "*");
+
+// asigna el nuevo texto al cuadro de texto
+CuadroTextoPassword->value(txt);}
+        xywh {250 165 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelsize 20
+      }
+      Fl_Button Boton7p {
+        label 7
+        callback {char txt[25];
+
+// concatena el nuevo carácter en la password
+strcat(Password, "7");
+
+// duplica el texto actual en una nueva variable
+strcpy(txt, CuadroTextoPassword->value());
+
+// concatena un asterisco para mostrar
+strcat(txt, "*");
+
+// asigna el nuevo texto al cuadro de texto
+CuadroTextoPassword->value(txt);}
+        xywh {150 115 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelsize 20
+      }
+      Fl_Button Boton8p {
+        label 8
+        callback {char txt[25];
+
+// concatena el nuevo carácter en la password
+strcat(Password, "8");
+
+// duplica el texto actual en una nueva variable
+strcpy(txt, CuadroTextoPassword->value());
+
+// concatena un asterisco para mostrar
+strcat(txt, "*");
+
+// asigna el nuevo texto al cuadro de texto
+CuadroTextoPassword->value(txt);}
+        xywh {200 115 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelsize 20
+      }
+      Fl_Button Boton9p {
+        label 9
+        callback {char txt[25];
+
+// concatena el nuevo carácter en la password
+strcat(Password, "9");
+
+// duplica el texto actual en una nueva variable
+strcpy(txt, CuadroTextoPassword->value());
+
+// concatena un asterisco para mostrar
+strcat(txt, "*");
+
+// asigna el nuevo texto al cuadro de texto
+CuadroTextoPassword->value(txt);}
+        xywh {250 115 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelsize 20
+      }
+      Fl_Button Boton0p {
+        label 0
+        callback {char txt[25];
+
+// concatena el nuevo carácter en la password
+strcat(Password, "0");
+
+// duplica el texto actual en una nueva variable
+strcpy(txt, CuadroTextoPassword->value());
+
+// concatena un asterisco para mostrar
+strcat(txt, "*");
+
+// asigna el nuevo texto al cuadro de texto
+CuadroTextoPassword->value(txt);}
+        xywh {150 265 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelsize 20
+      }
+      Fl_Button BotonBorrarp {
+        label Borrar
+        callback {char txt[25];
+
+// adelanta el carácter de fin de string un carácter, para borrar el último de la password
+Password[strlen(Password) - 1] = '\\0';
+
+// duplica el texto actual en una nueva variable
+strcpy(txt, CuadroTextoPassword->value());
+
+// adelanta el carácter de fin de string un carácter, para borrar el último
+txt[strlen(txt) - 1] = '\\0';
+
+// asigna el nuevo texto al cuadro de texto
+CuadroTextoPassword->value(txt);}
+        xywh {200 265 100 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelsize 17
+        code3 {switch (Idioma) {case ESP:o->label("Borrar");break; case ING:o->label("Delete");break; case ITA:o->label("Eliminare");break;}}
+      }
+    }
+    Fl_Button Cancelar_VentanaPassword {
+      label Cancelar
+      callback {// Vacía el cuadro de texto, para evitar líos...
+CuadroTextoPassword->value("");
+
+// Oculta la ventana emergente actual
+VentanaPassword->hide();
+
+// Y vuelve a presentar la ventana principal
+VentanaConfiguracion->activate();
+VentanaConfiguracion->cursor(FL_CURSOR_DEFAULT);}
+      xywh {270 360 135 75} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 0 labelfont 8 labelsize 20
+      code3 {switch (Idioma) {case ESP:o->label("Cancelar");break; case ING:o->label("Cancel");break; case ITA:o->label("Cancellare");break;}}
+    }
+    Fl_Button Aceptar_VentanaPassword {
+      label Aceptar
+      callback {// Si la contraseña es correcta sale del programa guardando los cambios
+if (!strcmp(Password, PasswordConfiguracion)) {
+
+	// guarda los datos modificados en /root/itaca/itaca.conf
+	escribir_configuracion();
+
+	// actualiza el disco
+	system("mount / -o rw,remount");
+	system("cp /root/itaca/itaca.conf /rootFLS/itaca/itaca.conf");
+	system("mount / -o ro,remount");
+
+	// sale del programa	
+	exit(0);
+	
+}
+
+// Si no, da un mensaje y vacía el cuadro de texto
+else {
+
+	// Asigna el mensaje
+	switch (Idioma) {
+			
+		case ESP:
+		BoxVentanaMensaje->label("Contraseña incorrecta");
+		break; 
+			
+		case ING:
+		BoxVentanaMensaje->label("Wrong password");
+		break; 
+			
+		case ITA:
+		BoxVentanaMensaje->label("Password errata");
+		break;
+			
+	}
+	
+	// Desactiva la ventana actual para que resalte la ventana emergente que saldrá a continuación
+	VentanaPassword->deactivate();
+	
+	// Presenta la ventana con el mensaje emergente
+	VentanaMensaje->show();
+	
+	// Vacía el cuadro de texto, para evitar líos...
+	CuadroTextoPassword->value("");
+	
+	// Y la password
+	strcpy(Password, "");
+
+}}
+      xywh {50 360 135 75} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 0 labelfont 8 labelsize 20
+      code3 {switch (Idioma) {case ESP:o->label("Aceptar");break; case ING:o->label("Accept");break; case ITA:o->label("Acettare");break;}}
+    }
+  }
+} 
+
+Function {Make_Window_Mensaje()} {open C
+} {
+  Fl_Window VentanaMensaje {open
+    xywh {325 215 475 230} type Double box NO_BOX color 1 selection_color 1 labelfont 8 labelcolor 7 modal noborder visible
+  } {
+    Fl_Group {} {open
+      xywh {0 0 475 230} box BORDER_BOX color 94
+    } {
+      Fl_Box BoxVentanaMensaje {
+        xywh {10 20 450 70} labelfont 8 labelsize 20 align 144
+      }
+      Fl_Button Aceptar_VentanaMensaje {
+        label Aceptar
+        callback {// Oculta la ventana emergente actual
+VentanaMensaje->hide();
+
+// Y vuelve a presentar la ventana activa desde donde se invocó el mensaje
+VentanaPassword->activate();}
+        xywh {165 120 150 75} box PLASTIC_UP_BOX color 0 labelfont 8 labelsize 20
+        code3 {switch (Idioma) {case ESP:o->label("Aceptar");break; case ING:o->label("Accept");break; case ITA:o->label("Acettare");break;}}
+      }
+    }
+  }
+} 
+
+Function {Make_Window_Turnos()} {open C
+} {
+  Fl_Window VentanaTurnos {open
+    xywh {0 0 800 600} type Double color 7 selection_color 7 when 6 modal noborder size_range {800 600 800 600} visible
+  } {
+    Fl_Box LogoItacaVentanaTrabajos {
+      image {fls.png} xywh {630 0 165 75} color 7 labelsize 12 align 16
+    }
+    Fl_Output CuadroTextoTurno0 {
+      label Texto
+      callback {// variable que indica donde se ha fijado el foco, para el teclado
+indice = 0;}
+      xywh {505 40 110 25} box PLASTIC_THIN_DOWN_BOX color 175 labelsize 12 align 5 textfont 13 textsize 12
+      code1 {o->value(TextoTurno[0]);}
+      code3 {switch (Idioma) {case ESP:o->label("Texto");break; case ING:o->label("Text");break; case ITA:o->label("Texti");break;}}
+    }
+    Fl_Group GrupoTecladoTrabajos {
+      xywh {10 320 615 270} box PLASTIC_UP_FRAME color 0
+    } {
+      Fl_Button Boton1t {
+        label 1
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {20 330 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button Boton2t {
+        label 2
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {70 330 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button Boton3t {
+        label 3
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {120 330 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button Boton4t {
+        label 4
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {170 330 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button Boton5t {
+        label 5
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {220 330 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button Boton6t {
+        label 6
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {270 330 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button Boton7t {
+        label 7
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {320 330 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button Boton8t {
+        label 8
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {370 330 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button Boton9t {
+        label 9
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {420 330 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button Boton0t {
+        label 0
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {470 330 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button BotonBorrart {
+        label Borrar
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	
+	if (strlen(CuadroTextoTurno0->value())) {
+        		
+		// copia el texto actual en una nueva variable
+		strcpy(str, CuadroTextoTurno0->value());
+
+		// adelanta el carácter de fin de string un carácter, para borrar el último
+		str[strlen(str) - 1] = '\\0';
+
+		// asigna el nuevo texto al cuadro de texto
+		CuadroTextoTurno0->value(str);
+	
+	}
+	
+	break;
+	
+	case 1:
+	
+	if (strlen(CuadroTextoTurno1->value())) {
+        		
+		// copia el texto actual en una nueva variable
+		strcpy(str, CuadroTextoTurno1->value());
+
+		// adelanta el carácter de fin de string un carácter, para borrar el último
+		str[strlen(str) - 1] = '\\0';
+
+		// asigna el nuevo texto al cuadro de texto
+		CuadroTextoTurno1->value(str);
+	
+	}
+	
+	break;
+	
+	case 2:
+	
+	if (strlen(CuadroTextoTurno2->value())) {
+        		
+		// copia el texto actual en una nueva variable
+		strcpy(str, CuadroTextoTurno2->value());
+
+		// adelanta el carácter de fin de string un carácter, para borrar el último
+		str[strlen(str) - 1] = '\\0';
+
+		// asigna el nuevo texto al cuadro de texto
+		CuadroTextoTurno2->value(str);
+	
+	}
+	
+	break;
+	
+	case 3:
+	
+	if (strlen(CuadroTextoTurno3->value())) {
+        		
+		// copia el texto actual en una nueva variable
+		strcpy(str, CuadroTextoTurno3->value());
+
+		// adelanta el carácter de fin de string un carácter, para borrar el último
+		str[strlen(str) - 1] = '\\0';
+
+		// asigna el nuevo texto al cuadro de texto
+		CuadroTextoTurno3->value(str);
+	
+	}
+	
+	break;
+	
+	case 4:
+	
+	if (strlen(CuadroTextoTurno4->value())) {
+        		
+		// copia el texto actual en una nueva variable
+		strcpy(str, CuadroTextoTurno4->value());
+
+		// adelanta el carácter de fin de string un carácter, para borrar el último
+		str[strlen(str) - 1] = '\\0';
+
+		// asigna el nuevo texto al cuadro de texto
+		CuadroTextoTurno4->value(str);
+	
+	}
+	
+	break;
+	
+	case 5:
+	
+	if (strlen(CuadroTextoTurno5->value())) {
+        		
+		// copia el texto actual en una nueva variable
+		strcpy(str, CuadroTextoTurno5->value());
+
+		// adelanta el carácter de fin de string un carácter, para borrar el último
+		str[strlen(str) - 1] = '\\0';
+
+		// asigna el nuevo texto al cuadro de texto
+		CuadroTextoTurno5->value(str);
+	
+	}
+	
+	break;
+	
+}}
+        xywh {520 330 95 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 17
+        code3 {switch (Idioma) {case ESP:o->label("Borrar");break; case ING:o->label("Delete");break; case ITA:o->label("Eliminare");break;}}
+      }
+      Fl_Button BotonQt {
+        label Q
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {45 380 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button BotonWt {
+        label W
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {95 380 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button BotonEt {
+        label E
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {145 380 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button BotonRt {
+        label R
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {195 380 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button BotonTt {
+        label T
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {245 380 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button BotonYt {
+        label Y
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {295 380 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button BotonUt {
+        label U
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {345 380 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button BotonIt {
+        label I
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {395 380 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button BotonOt {
+        label O
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {445 380 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button BotonPt {
+        label P
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {495 380 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button BotonAt {
+        label A
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {70 430 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button BotonSt {
+        label S
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {120 430 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button BotonDt {
+        label D
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {170 430 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button BotonFt {
+        label F
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {220 430 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button BotonGt {
+        label G
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {270 430 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button BotonHt {
+        label H
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {320 430 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button BotonJt {
+        label J
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {370 430 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button BotonKt {
+        label K
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {420 430 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button BotonLt {
+        label L
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {470 430 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button BotonEnhet {
+        label {Ñ}
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {520 430 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+        code0 {o->hide();// no se usa, problemas con el sistema de archivos}
+      }
+      Fl_Button BotonXt {
+        label X
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {145 480 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button BotonCt {
+        label C
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {195 480 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button BotonVt {
+        label V
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {245 480 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button BotonBt {
+        label B
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {295 480 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button BotonNt {
+        label N
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {345 480 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button BotonMt {
+        label M
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {395 480 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button BotonZt {
+        label Z
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {95 480 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button BotonEspaciot {
+        label { }
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, " ");
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, " ");
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, " ");
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, " ");
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, " ");
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, " ");
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {120 530 350 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+      Fl_Button BotonMenost {
+        label {-}
+        callback {// string de texto auxiliar
+char str[NumeroCaracteresTextoTurnos];
+
+// concatena el carácter al campo apropiado
+switch (indice) {
+
+	case 0:
+	strcpy(str, CuadroTextoTurno0->value());
+	strcat(str, o->label());
+	CuadroTextoTurno0->value(str);
+	break;
+	
+	case 1:
+	strcpy(str, CuadroTextoTurno1->value());
+	strcat(str, o->label());
+	CuadroTextoTurno1->value(str);
+	break;
+	
+	case 2:
+	strcpy(str, CuadroTextoTurno2->value());
+	strcat(str, o->label());
+	CuadroTextoTurno2->value(str);
+	break;
+	
+	case 3:
+	strcpy(str, CuadroTextoTurno3->value());
+	strcat(str, o->label());
+	CuadroTextoTurno3->value(str);
+	break;
+	
+	case 4:
+	strcpy(str, CuadroTextoTurno4->value());
+	strcat(str, o->label());
+	CuadroTextoTurno4->value(str);
+	break;
+	
+	case 5:
+	strcpy(str, CuadroTextoTurno5->value());
+	strcat(str, o->label());
+	CuadroTextoTurno5->value(str);
+	break;
+	
+}}
+        xywh {445 480 50 50} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 8 labelfont 8 labelsize 20
+      }
+    }
+    Fl_Button Aceptar_VentanaTurnos {
+      label Aceptar
+      callback {// Actualiza los campos de los turnos
+HoraInicioTurno[0] = (int)CounterHoraInicioTurno0->value();
+MinutoInicioTurno[0] = (int)CounterMinutoInicioTurno0->value();
+HoraFinTurno[0] = (int)CounterHoraFinTurno0->value();
+MinutoFinTurno[0] = (int)CounterMinutoFinTurno0->value();
+strcpy(TextoTurno[0], CuadroTextoTurno0->value());
+
+HoraInicioTurno[1] = (int)CounterHoraInicioTurno1->value();
+MinutoInicioTurno[1] = (int)CounterMinutoInicioTurno1->value();
+HoraFinTurno[1] = (int)CounterHoraFinTurno1->value();
+MinutoFinTurno[1] = (int)CounterMinutoFinTurno1->value();
+strcpy(TextoTurno[1], CuadroTextoTurno1->value());
+
+HoraInicioTurno[2] = (int)CounterHoraInicioTurno2->value();
+MinutoInicioTurno[2] = (int)CounterMinutoInicioTurno2->value();
+HoraFinTurno[2] = (int)CounterHoraFinTurno2->value();
+MinutoFinTurno[2] = (int)CounterMinutoFinTurno2->value();
+strcpy(TextoTurno[2], CuadroTextoTurno2->value());
+
+HoraInicioTurno[3] = (int)CounterHoraInicioTurno3->value();
+MinutoInicioTurno[3] = (int)CounterMinutoInicioTurno3->value();
+HoraFinTurno[3] = (int)CounterHoraFinTurno3->value();
+MinutoFinTurno[3] = (int)CounterMinutoFinTurno3->value();
+strcpy(TextoTurno[3], CuadroTextoTurno3->value());
+
+HoraInicioTurno[4] = (int)CounterHoraInicioTurno4->value();
+MinutoInicioTurno[4] = (int)CounterMinutoInicioTurno4->value();
+HoraFinTurno[4] = (int)CounterHoraFinTurno4->value();
+MinutoFinTurno[4] = (int)CounterMinutoFinTurno4->value();
+strcpy(TextoTurno[4], CuadroTextoTurno4->value());
+
+HoraInicioTurno[5] = (int)CounterHoraInicioTurno5->value();
+MinutoInicioTurno[5] = (int)CounterMinutoInicioTurno5->value();
+HoraFinTurno[5] = (int)CounterHoraFinTurno5->value();
+MinutoFinTurno[5] = (int)CounterMinutoFinTurno5->value();
+strcpy(TextoTurno[5], CuadroTextoTurno5->value());
+
+// Oculta la ventana emergente actual
+VentanaTurnos->hide();
+
+// Y vuelve a presentar la ventana principal
+VentanaConfiguracion->activate();
+VentanaConfiguracion->cursor(FL_CURSOR_DEFAULT);}
+      xywh {640 425 145 75} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 0 labelfont 8 labelsize 20
+      code3 {switch (Idioma) {case ESP:o->label("Aceptar");break; case ING:o->label("Accept");break; case ITA:o->label("Acettare");break;}}
+    }
+    Fl_Button Cancelar_VentanaTurnos {
+      label Cancelar
+      callback {// Oculta la ventana emergente actual
+VentanaTurnos->hide();
+
+// Y vuelve a presentar la ventana principal
+VentanaConfiguracion->activate();
+VentanaConfiguracion->cursor(FL_CURSOR_DEFAULT);}
+      xywh {640 510 145 75} box PLASTIC_UP_BOX down_box PLASTIC_DOWN_BOX color 0 labelfont 8 labelsize 20
+      code3 {switch (Idioma) {case ESP:o->label("Cancelar");break; case ING:o->label("Cancel");break; case ITA:o->label("Annulla");break;}}
+    }
+    Fl_Counter CounterHoraInicioTurno0 {
+      label {Hora inicio}
+      callback {//HoraInicioTurno(0) = (int) o->value();}
+      xywh {40 40 100 25} type Simple box FLAT_BOX color 48 labelsize 12 align 5 when 6 minimum 0 maximum 23 step 1 textfont 13 textsize 12
+      code0 {o->value(HoraInicioTurno[0]);}
+      code3 {switch (Idioma) {case ESP:o->label("Hora inicio");break; case ING:o->label("Starting hour");break; case ITA:o->label("Ora inizio");break;}}
+    }
+    Fl_Counter CounterMinutoInicioTurno0 {
+      label {Minuto inicio}
+      callback {//MinutoInicioTurno(0) = (int) o->value();}
+      xywh {150 40 100 25} type Simple box FLAT_BOX color 48 labelsize 12 align 5 when 6 minimum 0 maximum 59 step 1 textfont 13 textsize 12
+      code0 {o->value(MinutoInicioTurno[0]);}
+      code3 {switch (Idioma) {case ESP:o->label("Minuto inicio");break; case ING:o->label("Starting minute");break; case ITA:o->label("Minuti inizio");break;}}
+    }
+    Fl_Counter CounterHoraFinTurno0 {
+      label {Hora fin}
+      callback {//HoraFinTurno(0) = (int) o->value();}
+      xywh {270 40 100 25} type Simple box FLAT_BOX color 48 labelsize 12 align 5 when 6 minimum 0 maximum 23 step 1 textfont 13 textsize 12
+      code0 {o->value(HoraFinTurno[0]);}
+      code3 {switch (Idioma) {case ESP:o->label("Hora fin");break; case ING:o->label("Ending hour");break; case ITA:o->label("Ora fine");break;}}
+    }
+    Fl_Counter CounterMinutoFinTurno0 {
+      label {Minuto fin}
+      callback {//MinutoFinTurno(0) = (int) o->value();}
+      xywh {380 40 100 25} type Simple box FLAT_BOX color 48 labelsize 12 align 5 when 6 minimum 0 maximum 59 step 1 textfont 13 textsize 12
+      code0 {o->value(MinutoFinTurno[0]);}
+      code3 {switch (Idioma) {case ESP:o->label("Minuto fin");break; case ING:o->label("Ending minute");break; case ITA:o->label("Minuti fine");break;}}
+    }
+    Fl_Output CuadroTextoTurno1 {
+      label Texto
+      callback {// variable que indica donde se ha fijado el foco, para el teclado
+indice = 1;}
+      xywh {505 85 110 25} box PLASTIC_THIN_DOWN_BOX color 175 labeltype NO_LABEL labelsize 12 align 5 textfont 13 textsize 12
+      code1 {o->value(TextoTurno[1]);}
+      code3 {switch (Idioma) {case ESP:o->label("Texto");break; case ING:o->label("Text");break; case ITA:o->label("Texti");break;}}
+    }
+    Fl_Counter CounterHoraInicioTurno1 {
+      label {Hora inicio}
+      callback {//HoraInicioTurno(1) = (int) o->value();}
+      xywh {40 85 100 25} type Simple box FLAT_BOX color 48 labeltype NO_LABEL labelsize 12 align 5 when 6 minimum 0 maximum 23 step 1 textfont 13 textsize 12
+      code0 {o->value(HoraInicioTurno[1]);}
+      code3 {switch (Idioma) {case ESP:o->label("Hora inicio");break; case ING:o->label("Starting hour");break; case ITA:o->label("Hora di inizio");break;}}
+    }
+    Fl_Counter CounterMinutoInicioTurno1 {
+      label {Minuto inicio}
+      callback {//MinutoInicioTurno(1) = (int) o->value();}
+      xywh {150 85 100 25} type Simple box FLAT_BOX color 48 labeltype NO_LABEL labelsize 12 align 5 when 6 minimum 0 maximum 59 step 1 textfont 13 textsize 12
+      code0 {o->value(MinutoInicioTurno[1]);}
+      code3 {switch (Idioma) {case ESP:o->label("Minuto inicio");break; case ING:o->label("Starting minute");break; case ITA:o->label("Minuti di inizio");break;}}
+    }
+    Fl_Counter CounterHoraFinTurno1 {
+      label {Hora fin}
+      callback {//HoraFinTurno(1) = (int) o->value();}
+      xywh {270 85 100 25} type Simple box FLAT_BOX color 48 labeltype NO_LABEL labelsize 12 align 5 when 6 minimum 0 maximum 23 step 1 textfont 13 textsize 12
+      code0 {o->value(HoraFinTurno[1]);}
+      code3 {switch (Idioma) {case ESP:o->label("Hora fin");break; case ING:o->label("Ending hour");break; case ITA:o->label("Hora di fine");break;}}
+    }
+    Fl_Counter CounterMinutoFinTurno1 {
+      label {Minuto fin}
+      callback {//MinutoFinTurno(1) = (int) o->value();}
+      xywh {380 85 100 25} type Simple box FLAT_BOX color 48 labeltype NO_LABEL labelsize 12 align 5 when 6 minimum 0 maximum 59 step 1 textfont 13 textsize 12
+      code0 {o->value(MinutoFinTurno[1]);}
+      code3 {switch (Idioma) {case ESP:o->label("Minuto fin");break; case ING:o->label("Ending minute");break; case ITA:o->label("Minuti di fine");break;}}
+    }
+    Fl_Output CuadroTextoTurno2 {
+      label Texto
+      callback {// variable que indica donde se ha fijado el foco, para el teclado
+indice = 2;}
+      xywh {505 130 110 25} box PLASTIC_THIN_DOWN_BOX color 175 labeltype NO_LABEL labelsize 12 align 5 textfont 13 textsize 12
+      code1 {o->value(TextoTurno[2]);}
+      code3 {switch (Idioma) {case ESP:o->label("Texto");break; case ING:o->label("Text");break; case ITA:o->label("Texti");break;}}
+    }
+    Fl_Counter CounterHoraInicioTurno2 {
+      label {Hora inicio}
+      callback {//HoraInicioTurno(2) = (int) o->value();}
+      xywh {40 130 100 25} type Simple box FLAT_BOX color 48 labeltype NO_LABEL labelsize 12 align 5 when 6 minimum 0 maximum 23 step 1 textfont 13 textsize 12
+      code0 {o->value(HoraInicioTurno[2]);}
+      code3 {switch (Idioma) {case ESP:o->label("Hora inicio");break; case ING:o->label("Starting hour");break; case ITA:o->label("Hora di inizio");break;}}
+    }
+    Fl_Counter CounterMinutoInicioTurno2 {
+      label {Minuto inicio}
+      callback {//MinutoInicioTurno(2) = (int) o->value();}
+      xywh {150 130 100 25} type Simple box FLAT_BOX color 48 labeltype NO_LABEL labelsize 12 align 5 when 6 minimum 0 maximum 59 step 1 textfont 13 textsize 12
+      code0 {o->value(MinutoInicioTurno[2]);}
+      code3 {switch (Idioma) {case ESP:o->label("Minuto inicio");break; case ING:o->label("Starting minute");break; case ITA:o->label("Minuti di inizio");break;}}
+    }
+    Fl_Counter CounterHoraFinTurno2 {
+      label {Hora fin}
+      callback {//HoraFinTurno(2) = (int) o->value();}
+      xywh {270 130 100 25} type Simple box FLAT_BOX color 48 labeltype NO_LABEL labelsize 12 align 5 when 6 minimum 0 maximum 23 step 1 textfont 13 textsize 12
+      code0 {o->value(HoraFinTurno[2]);}
+      code3 {switch (Idioma) {case ESP:o->label("Hora fin");break; case ING:o->label("Ending hour");break; case ITA:o->label("Hora di fine");break;}}
+    }
+    Fl_Counter CounterMinutoFinTurno2 {
+      label {Minuto fin}
+      callback {//MinutoFinTurno(2) = (int) o->value();}
+      xywh {380 130 100 25} type Simple box FLAT_BOX color 48 labeltype NO_LABEL labelsize 12 align 5 when 6 minimum 0 maximum 59 step 1 textfont 13 textsize 12
+      code0 {o->value(MinutoFinTurno[2]);}
+      code3 {switch (Idioma) {case ESP:o->label("Minuto fin");break; case ING:o->label("Ending minute");break; case ITA:o->label("Minuti di fine");break;}}
+    }
+    Fl_Output CuadroTextoTurno3 {
+      label Texto
+      callback {// variable que indica donde se ha fijado el foco, para el teclado
+indice = 3;}
+      xywh {505 175 110 25} box PLASTIC_THIN_DOWN_BOX color 175 labeltype NO_LABEL labelsize 12 align 5 textfont 13 textsize 12
+      code1 {o->value(TextoTurno[3]);}
+      code3 {switch (Idioma) {case ESP:o->label("Texto");break; case ING:o->label("Text");break; case ITA:o->label("Texti");break;}}
+    }
+    Fl_Counter CounterHoraInicioTurno3 {
+      label {Hora inicio}
+      callback {//HoraInicioTurno(3) = (int) o->value();}
+      xywh {40 175 100 25} type Simple box FLAT_BOX color 48 labeltype NO_LABEL labelsize 12 align 5 when 6 minimum 0 maximum 23 step 1 textfont 13 textsize 12
+      code0 {o->value(HoraInicioTurno[3]);}
+      code3 {switch (Idioma) {case ESP:o->label("Hora inicio");break; case ING:o->label("Starting hour");break; case ITA:o->label("Hora di inizio");break;}}
+    }
+    Fl_Counter CounterMinutoInicioTurno3 {
+      label {Minuto inicio}
+      callback {//MinutoInicioTurno(3) = (int) o->value();}
+      xywh {150 175 100 25} type Simple box FLAT_BOX color 48 labeltype NO_LABEL labelsize 12 align 5 when 6 minimum 0 maximum 59 step 1 textfont 13 textsize 12
+      code0 {o->value(MinutoInicioTurno[3]);}
+      code3 {switch (Idioma) {case ESP:o->label("Minuto inicio");break; case ING:o->label("Starting minute");break; case ITA:o->label("Minuti di inizio");break;}}
+    }
+    Fl_Counter CounterHoraFinTurno3 {
+      label {Hora fin}
+      callback {//HoraFinTurno(3) = (int) o->value();}
+      xywh {270 175 100 25} type Simple box FLAT_BOX color 48 labeltype NO_LABEL labelsize 12 align 5 when 6 minimum 0 maximum 23 step 1 textfont 13 textsize 12
+      code0 {o->value(HoraFinTurno[3]);}
+      code3 {switch (Idioma) {case ESP:o->label("Hora fin");break; case ING:o->label("Ending hour");break; case ITA:o->label("Hora di fine");break;}}
+    }
+    Fl_Counter CounterMinutoFinTurno3 {
+      label {Minuto fin}
+      callback {//MinutoFinTurno(3) = (int) o->value();}
+      xywh {380 175 100 25} type Simple box FLAT_BOX color 48 labeltype NO_LABEL labelsize 12 align 5 when 6 minimum 0 maximum 59 step 1 textfont 13 textsize 12
+      code0 {o->value(MinutoFinTurno[3]);}
+      code3 {switch (Idioma) {case ESP:o->label("Minuto fin");break; case ING:o->label("Ending minute");break; case ITA:o->label("Minuti di fine");break;}}
+    }
+    Fl_Output CuadroTextoTurno4 {
+      label Texto
+      callback {// variable que indica donde se ha fijado el foco, para el teclado
+indice = 4;}
+      xywh {505 220 110 25} box PLASTIC_THIN_DOWN_BOX color 175 labeltype NO_LABEL labelsize 12 align 5 textfont 13 textsize 12
+      code1 {o->value(TextoTurno[4]);}
+      code3 {switch (Idioma) {case ESP:o->label("Texto");break; case ING:o->label("Text");break; case ITA:o->label("Texti");break;}}
+    }
+    Fl_Counter CounterHoraInicioTurno4 {
+      label {Hora inicio}
+      callback {//HoraInicioTurno(4) = (int) o->value();}
+      xywh {40 220 100 25} type Simple box FLAT_BOX color 48 labeltype NO_LABEL labelsize 12 align 5 when 6 minimum 0 maximum 23 step 1 textfont 13 textsize 12
+      code0 {o->value(HoraInicioTurno[4]);}
+      code3 {switch (Idioma) {case ESP:o->label("Hora inicio");break; case ING:o->label("Starting hour");break; case ITA:o->label("Hora di inizio");break;}}
+    }
+    Fl_Counter CounterMinutoInicioTurno4 {
+      label {Minuto inicio}
+      callback {//MinutoInicioTurno(4) = (int) o->value();}
+      xywh {150 220 100 25} type Simple box FLAT_BOX color 48 labeltype NO_LABEL labelsize 12 align 5 when 6 minimum 0 maximum 59 step 1 textfont 13 textsize 12
+      code0 {o->value(MinutoInicioTurno[4]);}
+      code3 {switch (Idioma) {case ESP:o->label("Minuto inicio");break; case ING:o->label("Starting minute");break; case ITA:o->label("Minuti di inizio");break;}}
+    }
+    Fl_Counter CounterHoraFinTurno4 {
+      label {Hora fin}
+      callback {//HoraFinTurno(4) = (int) o->value();}
+      xywh {270 220 100 25} type Simple box FLAT_BOX color 48 labeltype NO_LABEL labelsize 12 align 5 when 6 minimum 0 maximum 23 step 1 textfont 13 textsize 12
+      code0 {o->value(HoraFinTurno[4]);}
+      code3 {switch (Idioma) {case ESP:o->label("Hora fin");break; case ING:o->label("Ending hour");break; case ITA:o->label("Hora di fine");break;}}
+    }
+    Fl_Counter CounterMinutoFinTurno4 {
+      label {Minuto fin}
+      callback {//MinutoFinTurno(4) = (int) o->value();}
+      xywh {380 220 100 25} type Simple box FLAT_BOX color 48 labeltype NO_LABEL labelsize 12 align 5 when 6 minimum 0 maximum 59 step 1 textfont 13 textsize 12
+      code0 {o->value(MinutoFinTurno[4]);}
+      code3 {switch (Idioma) {case ESP:o->label("Minuto fin");break; case ING:o->label("Ending minute");break; case ITA:o->label("Minuti di fine");break;}}
+    }
+    Fl_Output CuadroTextoTurno5 {
+      label Texto
+      callback {// variable que indica donde se ha fijado el foco, para el teclado
+indice = 5;}
+      xywh {505 265 110 25} box PLASTIC_THIN_DOWN_BOX color 175 labeltype NO_LABEL labelsize 12 align 5 textfont 13 textsize 12
+      code1 {o->value(TextoTurno[5]);}
+      code3 {switch (Idioma) {case ESP:o->label("Texto");break; case ING:o->label("Text");break; case ITA:o->label("Texti");break;}}
+    }
+    Fl_Counter CounterHoraInicioTurno5 {
+      label {Hora inicio}
+      callback {//HoraInicioTurno(5) = (int) o->value();}
+      xywh {40 265 100 25} type Simple box FLAT_BOX color 48 labeltype NO_LABEL labelsize 12 align 5 when 6 minimum 0 maximum 23 step 1 textfont 13 textsize 12
+      code0 {o->value(HoraInicioTurno[5]);}
+      code3 {switch (Idioma) {case ESP:o->label("Hora inicio");break; case ING:o->label("Starting hour");break; case ITA:o->label("Hora di inizio");break;}}
+    }
+    Fl_Counter CounterMinutoInicioTurno5 {
+      label {Minuto inicio}
+      callback {//MinutoInicioTurno(5) = (int) o->value();}
+      xywh {150 265 100 25} type Simple box FLAT_BOX color 48 labeltype NO_LABEL labelsize 12 align 5 when 6 minimum 0 maximum 59 step 1 textfont 13 textsize 12
+      code0 {o->value(MinutoInicioTurno[5]);}
+      code3 {switch (Idioma) {case ESP:o->label("Minuto inicio");break; case ING:o->label("Starting minute");break; case ITA:o->label("Minuti di inizio");break;}}
+    }
+    Fl_Counter CounterHoraFinTurno5 {
+      label {Hora fin}
+      callback {//HoraFinTurno(5) = (int) o->value();}
+      xywh {270 265 100 25} type Simple box FLAT_BOX color 48 labeltype NO_LABEL labelsize 12 align 5 when 6 minimum 0 maximum 23 step 1 textfont 13 textsize 12
+      code0 {o->value(HoraFinTurno[5]);}
+      code3 {switch (Idioma) {case ESP:o->label("Hora fin");break; case ING:o->label("Ending hour");break; case ITA:o->label("Hora di fine");break;}}
+    }
+    Fl_Counter CounterMinutoFinTurno5 {
+      label {Minuto fin}
+      callback {//MinutoFinTurno(5) = (int) o->value();}
+      xywh {380 265 100 25} type Simple box FLAT_BOX color 48 labeltype NO_LABEL labelsize 12 align 5 when 6 minimum 0 maximum 59 step 1 textfont 13 textsize 12
+      code0 {o->value(MinutoFinTurno[5]);}
+      code3 {switch (Idioma) {case ESP:o->label("Minuto fin");break; case ING:o->label("Ending minute");break; case ITA:o->label("Minuti di fine");break;}}
+    }
+    Fl_Box b1 {
+      label 1
+      xywh {0 41 35 24}
+    }
+    Fl_Box b2 {
+      label 2
+      xywh {0 86 35 24}
+    }
+    Fl_Box b3 {
+      label 3
+      xywh {0 131 35 24}
+    }
+    Fl_Box b4 {
+      label 4
+      xywh {0 176 35 24}
+    }
+    Fl_Box b5 {
+      label 5
+      xywh {0 221 35 24}
+    }
+    Fl_Box b6 {
+      label 6
+      xywh {0 266 35 24}
+    }
+  }
+} 
+
+Function {CargarVentanaTurnos()} {open C return_type void
+} {
+  code {// Actualiza los campos de los turnos
+CounterHoraInicioTurno0->value(HoraInicioTurno[0]);
+CounterMinutoInicioTurno0->value(MinutoInicioTurno[0]);
+CounterHoraFinTurno0->value(HoraFinTurno[0]);
+CounterMinutoFinTurno0->value(MinutoFinTurno[0]);
+CuadroTextoTurno0->value(TextoTurno[0]);
+
+CounterHoraInicioTurno1->value(HoraInicioTurno[1]);
+CounterMinutoInicioTurno1->value(MinutoInicioTurno[1]);
+CounterHoraFinTurno1->value(HoraFinTurno[1]);
+CounterMinutoFinTurno1->value(MinutoFinTurno[1]);
+CuadroTextoTurno1->value(TextoTurno[1]);
+
+CounterHoraInicioTurno2->value(HoraInicioTurno[2]);
+CounterMinutoInicioTurno2->value(MinutoInicioTurno[2]);
+CounterHoraFinTurno2->value(HoraFinTurno[2]);
+CounterMinutoFinTurno2->value(MinutoFinTurno[2]);
+CuadroTextoTurno2->value(TextoTurno[2]);
+
+CounterHoraInicioTurno3->value(HoraInicioTurno[3]);
+CounterMinutoInicioTurno3->value(MinutoInicioTurno[3]);
+CounterHoraFinTurno3->value(HoraFinTurno[3]);
+CounterMinutoFinTurno3->value(MinutoFinTurno[3]);
+CuadroTextoTurno3->value(TextoTurno[3]);
+
+CounterHoraInicioTurno4->value(HoraInicioTurno[4]);
+CounterMinutoInicioTurno4->value(MinutoInicioTurno[4]);
+CounterHoraFinTurno4->value(HoraFinTurno[4]);
+CounterMinutoFinTurno4->value(MinutoFinTurno[4]);
+CuadroTextoTurno4->value(TextoTurno[4]);
+
+CounterHoraInicioTurno5->value(HoraInicioTurno[5]);
+CounterMinutoInicioTurno5->value(MinutoInicioTurno[5]);
+CounterHoraFinTurno5->value(HoraFinTurno[5]);
+CounterMinutoFinTurno5->value(MinutoFinTurno[5]);
+CuadroTextoTurno5->value(TextoTurno[5]);
+
+// Muestra la nueva ventana		
+VentanaTurnos->show();} {}
+} 
+
+Function {} {open C
+} {
+  code {// Flag para indicar si es configuración avanzada o no
+ConfigAvanzada = OFF;
+
+// Fija la apariencia plastic para todos los widgets
+Fl::scheme("plastic");
+
+// Elimina los recuadros de foco para todos los widgets
+Fl::visible_focus(OFF);
+
+// lee datos de configuración del archivo itaca.conf
+leer_configuracion();
+
+// crea las ventanas
+Make_Window();
+Make_Window_Password();
+Make_Window_Mensaje();
+Make_Window_Turnos();
+
+// y presenta la ventana principal
+VentanaConfiguracion->show();} {}
+} 

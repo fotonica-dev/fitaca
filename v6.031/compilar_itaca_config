@@ -1,0 +1,2 @@
+g++ -I/home/jplopeze/itaca/flash/usr/include/fltk-1.1 -Wall -pipe -g -o itaca_config itaca_config.cxx -L/home/jplopeze/itaca/flash/usr/lib/fltk-1.1 -lfltk /home/jplopeze/itaca/flash/usr/lib/fltk-1.1/libfltk.a -lm -lXext -lX11 
+#cp itaca_config /usr/local/bin
