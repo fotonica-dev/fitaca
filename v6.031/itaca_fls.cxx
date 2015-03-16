@@ -5,7 +5,7 @@
 // Objetivo:    Coder en Linux aprovechando la infraestructura de tiempo real 
 //		desarrollada para Resurfacing, y utilizando driver Comedi
 //		
-// Creado:	Mayo 2009 v1.3 A. López
+// 
 //
 //		Las versiones anteriores son para la DAQ NI pci6221 de 68 pines
 //		Esta versión v1.3 es para la DAQ NI pci6221 de 37 pines
@@ -23,7 +23,7 @@
 //		Qt: 3.3.8
 //		KDE: 3.5.8
 //
-// Copyright:   Fotonica Laser Systems
+// Copyright:   
 //
 //==============================================================================
 
